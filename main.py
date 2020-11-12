@@ -17,7 +17,6 @@ html = '<div>{quarterly_revenue_table}{yearly_revenue_table}</div>'.format(
     quarterly_revenue_table=quarterly_revenue_table,
     yearly_revenue_table=yearly_revenue_table,
 )
-print(html)
 
 driver = webdriver.Chrome(chrome.ChromeDriverManager().install())
 driver.execute_script("document.write('{}')".format(html))
