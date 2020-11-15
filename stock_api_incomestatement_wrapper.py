@@ -5,12 +5,12 @@ class IncomeStatementWrapper:
         self.income_statement = income_statement_json
 
     @property
-    def get_quarterly_revenue_growth_html_table(self):
+    def quarterly_revenue_growth_html_table(self):
         quarterly_reports = self.income_statement['quarterlyReports']
         return self._create_reports_table(quarterly_reports, 'Quarterly Revenue')
 
     @property
-    def get_yearly_revenue_growth_html_table(self):
+    def yearly_revenue_growth_html_table(self):
         annual_reports = self.income_statement['annualReports']
         return self._create_reports_table(annual_reports, 'Yearly Revenue')
 
