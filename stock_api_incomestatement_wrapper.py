@@ -1,60 +1,58 @@
-from json2html import *
+import os
+
+import openpyxl as xl
+from openpyxl.worksheet import table as xltable
+from openpyxl import utils as xlutils
 
 class IncomeStatementWrapper:
-    def __init__(self, income_statement_json):
+    def __init__(self, income_statement_json, ticker):
         self.income_statement = income_statement_json
+        self.ticker = ticker
 
     @property
-    def quarterly_revenue_growth_html_table(self):
-        quarterly_reports = self.income_statement['quarterlyReports']
-        return self._create_reports_table(quarterly_reports, 'Quarterly Revenue')
-
-    @property
-    def yearly_revenue_growth_html_table(self):
+    def create_and_open_yearly_revenue_excel(self):
         annual_reports = self.income_statement['annualReports']
-        return self._create_reports_table(annual_reports, 'Yearly Revenue')
+        workbook = xl.Workbook()
+        worksheet = workbook.active
+        worksheet.title = 'Income Annual'
+        worksheet.sheet_properties.tabColor = 'ff9191'
+        
+        # top left most cell shows ticker + currency
+        column_headings = ['{} ({})'.format(self.ticker, annual_reports[0]['reportedCurrency'])]
+        data = [
+            ['Revenue'],
+            ['Gross'],
+            ['Op Inc'],
+            ['EBIT'],
+            ['Net'],
+        ]
+        for report in annual_reports:
+            column_headings.append(report['fiscalDateEnding'])
+            data[0].append(int(report['totalRevenue']))
+            data[1].append(int(report['grossProfit']))
+            data[2].append(int(report['operatingIncome']))
+            data[3].append(int(report['ebit']))
+            data[4].append(int(report['netIncome']))
 
-    def _create_reports_table(self, reports, table_name):
-        data = []
-        previous_revenue = None
-
-        # API returns in order from latest date until oldest, reverse this so q/q calculations are computed properly
-        reports.reverse()
-        for report in reports:
-            revenue = float(report['totalRevenue'])
-            revenue_change = 'n/a'
-            percent_growth_b2b = 'n/a'
-            if previous_revenue:
-                revenue_change = round(revenue - previous_revenue, 2)
-                percent_growth_b2b = round((revenue_change / previous_revenue) * 100, 2)
-
-            data.append(
-                {
-                    'date': report['fiscalDateEnding'],
-                    'revenue': round(revenue, 2),
-                    'change': revenue_change,
-                    '% change': percent_growth_b2b,
-                }
+        worksheet.append(column_headings)
+        for row in data:
+            worksheet.append(row)
+        
+        worksheet.add_table(xltable.Table(
+            displayName='Annual_Income',
+            # If this isn't specified the program will crash in a cryptic way
+            ref='A1:F6',
+            tableStyleInfo=xltable.TableStyleInfo(
+                name='TableStyleMedium9',
+                showFirstColumn=True,
+                showLastColumn=False,
+                showRowStripes=True,
+                showColumnStripes=False,
             )
-            previous_revenue = revenue
+        ))
 
-        total_change = 0.0
-        total_revenue = 0.0
-        for i in data[1:]:  # first element is the string 'n/a'
-            total_revenue = total_revenue + i['change']
-            total_change = total_change + i['% change']
+        for i in range(len(column_headings)):
+            worksheet.column_dimensions[xlutils.get_column_letter(i + 1)].width = 15
 
-        data.append(
-            {
-                'date': '~avg data~',
-                'revenue': '~avg data~',
-                'change': 'avg: {}'.format(round(total_revenue / len(data), 2)),
-                '% change': 'avg: {}'.format(round(total_change / len(data), 2)),
-            },
-        )
-
-        # Ordered was switched above to facilitate q/q calculations, reverse back so newest date is first
-        data.reverse()
-        return json2html.convert(
-            json={table_name: data},
-        )
+        workbook.save('income_annual_apha.xlsx')
+        os.startfile('income_annual_apha.xlsx')
