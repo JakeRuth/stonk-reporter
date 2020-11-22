@@ -15,4 +15,6 @@ income_statement_json = stock_api_wrapper.get_income_statement_json('APHA')
 #         income_statement_json = json.load(json_file)
 
 income_statement = stock_api_incomestatement_wrapper.IncomeStatementWrapper(income_statement_json, 'APHA')
-income_statement.create_and_open_yearly_revenue_excel
+income_statement.add_yearly_revenue_sheet()
+income_statement.add_quarterly_revenue_sheet()
+income_statement.open_excel_sheet()
