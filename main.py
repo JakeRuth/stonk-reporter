@@ -5,7 +5,6 @@ import stock_api_incomestatement_wrapper
 
 
 api_key = input('Enter your ALPHA Vantage API key: ')
-
 stock_api_wrapper = stock_api.StockApiWrapper(api_key)
 income_statement_json = stock_api_wrapper.get_income_statement_json('APHA')
 
