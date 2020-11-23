@@ -37,24 +37,21 @@ class IncomeStatementWrapper:
             ['Revenue'],
             ['Gross'],
             ['Op Inc'],
-            ['EBIT'],
             ['Net'],
         ]
         for report in reports:
-            fiscal_date_ending = report['fiscalDateEnding']
+            fiscal_date_ending = str(report['fiscalDateEnding'])
             column_headings.append(fiscal_date_ending)
 
             total_revenue = excel_helpers.string_to_float(report['totalRevenue'])
             gross_profit = excel_helpers.string_to_float(report['grossProfit'])
             operating_income = excel_helpers.string_to_float(report['operatingIncome'])
-            ebit = excel_helpers.string_to_float(report['ebit'])
             net_income = excel_helpers.string_to_float(report['netIncome'])
 
             data[0].append(total_revenue)
             data[1].append(gross_profit)
             data[2].append(operating_income)
-            data[3].append(ebit)
-            data[4].append(net_income)
+            data[3].append(net_income)
 
         worksheet.append(column_headings)
         for row in data:
@@ -63,7 +60,7 @@ class IncomeStatementWrapper:
         worksheet.add_table(xltable.Table(
             displayName=table_name,
             # If this isn't specified the program will crash in a cryptic way
-            ref='A1:AA6',
+            ref='A1:AA5',
             tableStyleInfo=xltable.TableStyleInfo(
                 name='TableStyleMedium9',
                 showFirstColumn=True,
@@ -82,7 +79,7 @@ class IncomeStatementWrapper:
 
         yaxis_dates = xlchart.Reference(
             worksheet,
-            min_col=1,
+            min_col=2,
             max_col=len(reports),
             min_row=1,
             max_row=1,
@@ -92,7 +89,7 @@ class IncomeStatementWrapper:
             min_col=1,
             max_col=len(reports),
             min_row=2,
-            max_row=6,
+            max_row=5,
         )
         chart.add_data(xaxis_data, titles_from_data=True, from_rows=True)
         chart.set_categories(yaxis_dates)
