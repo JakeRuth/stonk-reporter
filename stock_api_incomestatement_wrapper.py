@@ -1,6 +1,6 @@
 import os
 
-import excel_helpers
+from shared import excel_helpers
 import openpyxl as xl
 from openpyxl.worksheet import table as xltable
 from openpyxl import chart as xlchart
@@ -26,20 +26,20 @@ class IncomeStatementWrapper:
         quarterly_reports = self.income_statement['quarterlyReports']
         annual_column_heading, annual_table_data = self._get_table_data(annual_reports)
         quarterly_column_heading, quarterly_table_data = self._get_table_data(quarterly_reports)
-        
+
         self.worksheet.append(annual_column_heading)
         for row in annual_table_data:
             self.worksheet.append(row)
         self.worksheet.append(quarterly_column_heading)
         for row in quarterly_table_data:
             self.worksheet.append(row)
-        
+
         length_of_annual_data = len(annual_table_data[0])
         # Moves the auarterly sheet next to the annual sheet
         self.worksheet.move_range(
             'A6:AAA10',  # Value after : is purposefully very large since we don't care about copying blank values
             rows=-5,  # 5 accounts for column header and 4 data items we are pulling for
-            cols=length_of_annual_data + 1,  # add 1 to leave space in between tables 
+            cols=length_of_annual_data + 1,  # add 1 to leave space in between tables
         )
         self.worksheet.add_table(xltable.Table(
             displayName='Annual',
@@ -65,7 +65,7 @@ class IncomeStatementWrapper:
                 showColumnStripes=False,
             )
         ))
-        
+
         annual_chart = self._get_chart(length_of_annual_data)
         length_of_quarterly_data = len(quarterly_table_data[0])
         quarterly_chart = self._get_chart(length_of_quarterly_data, length_of_annual_data + 1)
@@ -78,7 +78,7 @@ class IncomeStatementWrapper:
             self.worksheet.column_dimensions[xlutils.get_column_letter(i + 1)].width = 15
 
         self.workbook.save(EXCEL_FILENAME)
-    
+
     def _get_table_data(self, reports):
         # top left most cell shows ticker + currency
         column_headings = ['{} ({})'.format(self.ticker, reports[0]['reportedCurrency'])]
@@ -88,7 +88,7 @@ class IncomeStatementWrapper:
             ['Op Inc'],
             ['Net'],
         ]
-        
+
         for report in reports:
             fiscal_date_ending = str(report['fiscalDateEnding'])
             column_headings.append(fiscal_date_ending)
@@ -102,9 +102,9 @@ class IncomeStatementWrapper:
             data[1].append(gross_profit)
             data[2].append(operating_income)
             data[3].append(net_income)
-        
+
         return column_headings, data
-    
+
     def _get_chart(self, chart_length, offset=0):
         chart = xlchart.AreaChart()
         chart.title='Pretty graph'

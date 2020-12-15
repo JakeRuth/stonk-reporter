@@ -1,6 +1,6 @@
 import json
 
-import stock_api
+from shared import stock_api
 import stock_api_incomestatement_wrapper
 
 
