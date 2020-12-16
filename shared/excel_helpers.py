@@ -1,6 +1,8 @@
 def string_to_float(string_float):
     return round(float(string_float), 2)
 
+ # TODO: Delete this and jsut use xlutils.get_column_letter you dumby
+ # TODO: Rename this file to math utils or something
 def convert_number_to_cell_value(number):
     stupid_cell_map = {
         1: 'A',
