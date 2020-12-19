@@ -1,4 +1,8 @@
 def string_to_float(string_float):
+    if (string_float == 'None'):
+        print('WARNING: Unexpected None value for column, defaulting to 0')
+        return 'ERROR'
+
     return round(float(string_float), 2)
 
  # TODO: Delete this and jsut use xlutils.get_column_letter you dumby
