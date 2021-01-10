@@ -3,6 +3,7 @@
 **/dist
 **/build
 **/static_json_data
+**/aws_playground
 *.html
 *.xlsx
 *.spec
