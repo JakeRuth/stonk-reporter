@@ -1,8 +1,0 @@
-- only need quarterly and not annual data because you can compute TTM and any "year" from the quarterly
-- create wrapper for each financial statement (i.e. income statement)
-  - add access fields for latest value and TTM value for any key (i.e. revenue, gross, etc)
-    - TTM only relevant for some fields (i.e. not assets, liabilities)
-- create wrapper for company overview for ratios etc
-- create excel helper wrapper
-  - create chart
-  - create table
