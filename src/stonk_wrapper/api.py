@@ -1,3 +1,4 @@
+import json
 import requests
 
 class StonkApiException(Exception):
@@ -26,6 +27,11 @@ class StonkApiWrapper:
     # https://www.alphavantage.co/documentation/#income-statement
     @property
     def income_statement(self):
+        # if self.stonk_ticker == 'APHA':
+        #     with open('stonk_wrapper/cached_api_calls/apha_income.json') as json_file:
+        #         print('Getting static income statement for APHA from cache')
+        #         return json.load(json_file)
+
         return self._get_json('INCOME_STATEMENT')
 
     # https://www.alphavantage.co/documentation/#cash-flow

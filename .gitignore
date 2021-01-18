@@ -6,5 +6,6 @@
 **/aws_playground
 *.html
 *.xlsx
+*.json
 *.spec
 debug.log
