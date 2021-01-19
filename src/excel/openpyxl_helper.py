@@ -2,22 +2,30 @@ from openpyxl import chart, utils
 from openpyxl.chart import layout
 from openpyxl.worksheet import table
 
+
+TABLE_STYLES = {
+    'blue': 'TableStyleMedium9',
+    'red': 'TableStyleMedium3',
+    'purp': 'TableStyleMedium12',
+}
+
 def add_table(
     worksheet,
     name,
-    start_cell,
     num_rows,
     num_columns,
+    style,
+    offset=1,
 ):
     worksheet.add_table(table.Table(
         displayName=name,
-        ref='{}:{}{}'.format(
-            start_cell,
+        ref='A{}:{}{}'.format(
+            offset,
             utils.get_column_letter(num_columns),
-            num_rows,
+            num_rows + offset - 1,
         ),
         tableStyleInfo=table.TableStyleInfo(
-            name='TableStyleMedium9',
+            name=TABLE_STYLES[style],
             showFirstColumn=True,
             showLastColumn=False,
             showRowStripes=True,
@@ -44,7 +52,7 @@ def add_graph(
     area_chart.x_axis.tickLblSkip = 1
     # put legend on the bottom which allows the graph to be wider
     area_chart.legend.position = 'b'
-    # not sure exactly how this works but this makes the graph bigger within the space alotted 
+    # not sure exactly how this works but this makes the graph bigger within the space alotted
     area_chart.layout = layout.Layout(
         layout.ManualLayout(
             x=0, y=0,

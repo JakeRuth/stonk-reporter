@@ -22,27 +22,28 @@ workbook = pyxl.Workbook()
 worksheet = workbook.create_sheet('Income', 0)
 worksheet.sheet_properties.tabColor = 'ff9191'  # colors are cool... why not?
 # 100 is a dumb value to just set all the column widths to be LORGE
-for i in range(100):
+worksheet.column_dimensions[pyxl_utils.get_column_letter(1)].width = 20
+for i in range(1, 100):
     worksheet.column_dimensions[pyxl_utils.get_column_letter(i + 1)].width = 15
 
-quarterly_income_table_data = [
+income_table_data = [
     all_report_dates_heading_row,
     all_revenue_row,
     all_gross_row,
     all_operating_income_row,
     all_net_income_row,
 ]
-for row in quarterly_income_table_data:
+for row in income_table_data:
     worksheet.append(row)
 
-num_table_rows = len(quarterly_income_table_data)
-num_table_columns = len(quarterly_income_table_data[0])
+num_table_rows = len(income_table_data)
+num_table_columns = len(income_table_data[0])
 openpyxl_helper.add_table(
     worksheet=worksheet,
     name='Quarterly',
-    start_cell='A1',
     num_rows=num_table_rows,
     num_columns=num_table_columns,
+    style='blue',
 )
 openpyxl_helper.add_graph(
     worksheet=worksheet,
@@ -50,6 +51,53 @@ openpyxl_helper.add_graph(
     title='Quarterly',
     y_axis_label=income_statement.currency,
     chart_length=num_table_columns,
+)
+
+# this is dumb but it's the easiest way I've found to add rows deeper down a sheet
+# instead of adding it with .append and then manually moving the range
+for i in range(15):
+    worksheet.append([''])
+
+income_growth_data = [
+    ['% change quarterly'] + income_statement.all_report_dates,
+    ['Revenue Growth q/q'] + income_statement.revenue_growth,
+    ['Gross Growth q/q'] + income_statement.gross_growth,
+    ['Op Inc Growth q/q'] + income_statement.operating_income_growth,
+    ['Net Growth q/q'] + income_statement.net_income_growth,
+]
+for row in income_growth_data:
+    worksheet.append(row)
+
+num_table_rows = len(income_growth_data)
+num_table_columns = len(income_growth_data[0])
+openpyxl_helper.add_table(
+    worksheet=worksheet,
+    name='Growth',
+    offset=21,
+    num_rows=num_table_rows,
+    num_columns=num_table_columns,
+    style='red',
+)
+
+income_growth_data = [
+    ['% change yearly'] + income_statement.all_report_dates[0::4],
+    ['Revenue Growth y/y'] + income_statement.revenue_growth_yoy,
+    ['Gross Growth y/y'] + income_statement.gross_growth_yoy,
+    ['Op Inc Growth y/y'] + income_statement.operating_income_growth_yoy,
+    ['Net Growth y/y'] + income_statement.net_income_growth_yoy,
+]
+for row in income_growth_data:
+    worksheet.append(row)
+
+num_table_rows = len(income_growth_data)
+num_table_columns = len(income_growth_data[0])
+openpyxl_helper.add_table(
+    worksheet=worksheet,
+    name='GrowthYear',
+    offset=26,
+    num_rows=num_table_rows,
+    num_columns=num_table_columns,
+    style='purp',
 )
 
 filename = '{}_overview_v1.xlsx'.format(stock_ticker)
