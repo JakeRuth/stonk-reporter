@@ -9,14 +9,14 @@ from stonk_wrapper import financial_data
 
 stock_ticker = 'APHA'
 data = financial_data.FinancialData(stock_ticker)
-income_statement = data.income_statement
+income_statement = data.income_statement_quarterly
 
 top_left_cell_label = '{} #s in 1000s'.format(income_statement.currency)
-all_report_dates_heading_row = [top_left_cell_label] + income_statement.all_quarterly_report_dates
-all_revenue_row = ['Revenue'] + income_statement.all_quarterly_revenue
-all_gross_row = ['Gross'] + income_statement.all_quarterly_gross
-all_operating_income_row = ['Op Income'] + income_statement.all_quarterly_operating_income
-all_net_income_row = ['Net'] + income_statement.all_quarterly_net_income
+all_report_dates_heading_row = [top_left_cell_label] + income_statement.all_report_dates
+all_revenue_row = ['Revenue'] + income_statement.all_revenue
+all_gross_row = ['Gross'] + income_statement.all_gross
+all_operating_income_row = ['Op Income'] + income_statement.all_operating_income
+all_net_income_row = ['Net'] + income_statement.all_net_income
 
 workbook = pyxl.Workbook()
 worksheet = workbook.create_sheet('Income', 0)
