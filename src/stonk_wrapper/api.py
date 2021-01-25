@@ -42,9 +42,19 @@ class StonkApiWrapper:
     # https://www.alphavantage.co/documentation/#balance-sheet
     @property
     def balance_sheet(self):
+        # if self.stonk_ticker == 'APHA':
+        #     with open('stonk_wrapper/cached_api_calls/apha_balance_sheet.json') as json_file:
+        #         print('Getting static income statement for APHA from cache')
+        #         return json.load(json_file)
+
         return self._get_json('BALANCE_SHEET')
 
     # https://www.alphavantage.co/documentation/#company-overview
     @property
     def company_overview(self):
+        # if self.stonk_ticker == 'APHA':
+        #     with open('stonk_wrapper/cached_api_calls/apha_overview.json') as json_file:
+        #         print('Getting static overview for APHA from cache')
+        #         return json.load(json_file)
+
         return self._get_json('OVERVIEW')
