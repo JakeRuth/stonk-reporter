@@ -8,6 +8,8 @@ TABLE_STYLES = {
     'blue': 'TableStyleMedium9',
     'purp': 'TableStyleMedium12',
     'red': 'TableStyleMedium3',
+    'teal': 'TableStyleMedium13',
+    'green': 'TableStyleMedium11',
 }
 
 def add_cell(

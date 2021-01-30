@@ -34,12 +34,13 @@ class BalanceSheet:
             goodwill = math_helper.format_number(report['goodwill'])
             self._goodwill.append(goodwill)
 
-            self._total_intangible_assets.append(intangible_assets + goodwill)
+            total_intanglible_assets = intangible_assets + goodwill
+            self._total_intangible_assets.append(total_intanglible_assets)
 
-            total_tangible_assets = total_assets - intangible_assets - goodwill
+            total_tangible_assets = total_assets - total_intanglible_assets
             self._total_tangible_assets.append(total_tangible_assets)
 
-            share_holder_equity = math_helper.format_number(report['totalShareholderEquity'])
+            share_holder_equity = total_assets - total_liabilities
             self._share_holder_equity.append(share_holder_equity)
 
             cash = math_helper.format_number(report['cash'])

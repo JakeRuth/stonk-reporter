@@ -44,7 +44,7 @@ class StonkApiWrapper:
     def balance_sheet(self):
         # if self.stonk_ticker == 'APHA':
         #     with open('stonk_wrapper/cached_api_calls/apha_balance_sheet.json') as json_file:
-        #         print('Getting static income statement for APHA from cache')
+        #         print('Getting static balance sheet for APHA from cache')
         #         return json.load(json_file)
 
         return self._get_json('BALANCE_SHEET')

@@ -66,14 +66,12 @@ def _add_balance_sheet(workbook, balance_sheet, company_overview):
         chart_type='bar',
     )
 
-    # this is dumb but it's the easiest way I've found to add rows deeper down a sheet
-    # instead of adding it with .append and then manually moving the range
     for i in range(15):
         worksheet.append([''])
 
     goodwill = ['Goodwill'] + balance_sheet.goodwill
-    intangible_assets = ['Intangile Assets'] + balance_sheet.intangible_assets
-    total_intangible_assets = ['Total Intangile Assets'] + balance_sheet.total_intangible_assets
+    intangible_assets = ['Intangible Assets'] + balance_sheet.intangible_assets
+    total_intangible_assets = ['Total Intangible Assets'] + balance_sheet.total_intangible_assets
 
     # Create quarterly income table with graph
     intangible_assets_data = [
@@ -93,7 +91,7 @@ def _add_balance_sheet(workbook, balance_sheet, company_overview):
         row_offset=22,
         num_rows=num_table_rows,
         num_columns=num_table_columns,
-        style='red',
+        style='purp',
     )
     openpyxl_helper.add_graph(
         worksheet=worksheet,
@@ -105,28 +103,26 @@ def _add_balance_sheet(workbook, balance_sheet, company_overview):
         chart_type='bar',
     )
 
-    # this is dumb but it's the easiest way I've found to add rows deeper down a sheet
-    # instead of adding it with .append and then manually moving the range
     for i in range(15):
         worksheet.append([''])
 
+    current_assets = ['Curr Assets'] + balance_sheet.current_assets
     current_liabilities = ['Curr Liabilities'] + balance_sheet.current_liabilities
-    non_current_liabilities = ['Non Curr Liabilities'] + balance_sheet.non_current_liabilities
 
     # Create quarterly income table with graph
-    liabilities_data = [
+    current_data = [
         all_report_dates_heading_row,
+        current_assets,
         current_liabilities,
-        non_current_liabilities,
     ]
-    for row in liabilities_data:
+    for row in current_data:
         worksheet.append(row)
 
-    num_table_rows = len(liabilities_data)
-    num_table_columns = len(liabilities_data[0])
+    num_table_rows = len(current_data)
+    num_table_columns = len(current_data[0])
     openpyxl_helper.add_table(
         worksheet=worksheet,
-        name='Liabilities',
+        name='Current',
         row_offset=41,
         num_rows=num_table_rows,
         num_columns=num_table_columns,
@@ -134,11 +130,111 @@ def _add_balance_sheet(workbook, balance_sheet, company_overview):
     )
     openpyxl_helper.add_graph(
         worksheet=worksheet,
-        title='Liabilities',
+        title='Current',
         y_axis_label=balance_sheet.currency,
         num_columns=num_table_columns,
         num_rows=num_table_rows,
         row_offset=41,
+        chart_type='bar',
+    )
+
+    for i in range(15):
+        worksheet.append([''])
+
+    non_current_assets = ['Non Curr Assets'] + balance_sheet.non_current_assets
+    non_current_liabilities = ['Non Curr Liabilities'] + balance_sheet.non_current_liabilities
+
+    non_current_data = [
+        all_report_dates_heading_row,
+        non_current_assets,
+        non_current_liabilities,
+    ]
+    for row in non_current_data:
+        worksheet.append(row)
+
+    num_table_rows = len(non_current_data)
+    num_table_columns = len(non_current_data[0])
+    openpyxl_helper.add_table(
+        worksheet=worksheet,
+        name='NonCurrent',
+        row_offset=59,
+        num_rows=num_table_rows,
+        num_columns=num_table_columns,
+        style='red',
+    )
+    openpyxl_helper.add_graph(
+        worksheet=worksheet,
+        title='NonCurrent',
+        y_axis_label=balance_sheet.currency,
+        num_columns=num_table_columns,
+        num_rows=num_table_rows,
+        row_offset=59,
+        chart_type='bar',
+    )
+
+    for i in range(15):
+        worksheet.append([''])
+
+    non_current_debt = ['Curr Debt'] + balance_sheet.current_debt
+    long_term_debt = ['Long Term Debt'] + balance_sheet.long_term_debt
+
+    debt_data = [
+        all_report_dates_heading_row,
+        non_current_debt,
+        long_term_debt,
+    ]
+    for row in debt_data:
+        worksheet.append(row)
+
+    num_table_rows = len(debt_data)
+    num_table_columns = len(debt_data[0])
+    openpyxl_helper.add_table(
+        worksheet=worksheet,
+        name='Debt',
+        row_offset=77,
+        num_rows=num_table_rows,
+        num_columns=num_table_columns,
+        style='teal',
+    )
+    openpyxl_helper.add_graph(
+        worksheet=worksheet,
+        title='Debt',
+        y_axis_label=balance_sheet.currency,
+        num_columns=num_table_columns,
+        num_rows=num_table_rows,
+        row_offset=77,
+        chart_type='bar',
+    )
+
+    for i in range(15):
+        worksheet.append([''])
+
+    cash = ['Cash'] + balance_sheet.cash
+
+    cash_data = [
+        all_report_dates_heading_row,
+        cash,
+    ]
+    for row in cash_data:
+        worksheet.append(row)
+
+    num_table_rows = len(cash_data)
+    num_table_columns = len(cash_data[0])
+    openpyxl_helper.add_table(
+        worksheet=worksheet,
+        name='Cash',
+        row_offset=95,
+        num_rows=num_table_rows,
+        num_columns=num_table_columns,
+        style='green',
+    )
+    openpyxl_helper.add_graph(
+        worksheet=worksheet,
+        title='Cash',
+        y_axis_label=balance_sheet.currency,
+        num_columns=num_table_columns,
+        num_rows=num_table_rows,
+        row_offset=95,
         chart_type='bar',
     )
 
