@@ -50,7 +50,7 @@ def add_sheet(
     workbook,
     name,
     tab_color,
-    index=0,
+    index,
 ):
     worksheet = workbook.create_sheet(name, index)
     worksheet.sheet_properties.tabColor = tab_color
@@ -66,10 +66,10 @@ def add_graph(
     title,
     num_rows,
     num_columns,
+    chart_type,
     x_axis_label='',
     y_axis_label='',
     row_offset=1,
-    chart_type='area',
 ):
     area_chart = None
     if chart_type == 'area':
@@ -79,6 +79,9 @@ def add_graph(
         area_chart = chart.BarChart()
         area_chart.style = 42
         area_chart.shape = 4
+    elif chart_type == 'line':
+        area_chart = chart.LineChart()
+        area_chart.style = 42
     else:
         raise Exception('Unknown chart_type param: {}'.format(chart_type))
 
@@ -114,6 +117,11 @@ def add_graph(
     )
     area_chart.add_data(xaxis_data, titles_from_data=True, from_rows=True)
     area_chart.set_categories(yaxis_dates)
+
+    # Override default width which is 5 pts, set in EMU units (12700 EMU = 1 pt)
+    if chart_type == 'line':
+        for line in area_chart.series:
+            line.graphicalProperties.line.width = 25400
 
     start_cell = 'A{}'.format(row_offset + num_rows)
     worksheet.add_chart(area_chart, start_cell)

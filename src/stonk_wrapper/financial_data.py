@@ -8,17 +8,22 @@ class FinancialData:
     def __init__(self, stonk_ticker):
         api_wrapper = api.StonkApiWrapper(stonk_ticker, 'jkjk')
 
-        income_statement_json = api_wrapper.income_statement
+        income_statement_json = api_wrapper.get_income_statement()
         self._income_statement_quarterly = income_statement.IncomeStatement(
             income_statement_json['quarterlyReports']
         )
 
-        balance_sheet_json = api_wrapper.balance_sheet
+        balance_sheet_json = api_wrapper.get_balance_sheet()
         self._balance_sheet_quarterly = balance_sheet.BalanceSheet(
             balance_sheet_json['quarterlyReports']
         )
 
-        company_overview_json = api_wrapper.company_overview
+        cashflow_json = api_wrapper.get_cashflow()
+        self._cashflow_quarterly = cashflow.Cashflow(
+            cashflow_json['quarterlyReports']
+        )
+
+        company_overview_json = api_wrapper.get_company_overview()
         self._company_overview = company_overview.CompanyOverview(company_overview_json)
 
     @property
@@ -32,3 +37,7 @@ class FinancialData:
     @property
     def company_overview(self):
         return self._company_overview
+
+    @property
+    def cashflow_quarterly(self):
+        return self._cashflow_quarterly

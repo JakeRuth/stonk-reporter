@@ -12,19 +12,94 @@ def main():
     income_statement = data.income_statement_quarterly
     company_overview = data.company_overview
     balance_sheet = data.balance_sheet_quarterly
+    cashflow = data.cashflow_quarterly
 
     workbook = pyxl.Workbook()
-    _add_income_sheet(workbook, income_statement, company_overview)
-    _add_balance_sheet(workbook, balance_sheet, company_overview)
+    _add_income_sheet(workbook, income_statement, company_overview, cashflow.free_cash_flow_ttm)
+    _add_balance_sheet(workbook, balance_sheet)
+    _add_cashflow_sheet(workbook, cashflow)
     filename = '{}_overview_v1.xlsx'.format(stock_ticker)
     workbook.save(filename)
     os.startfile(filename)
 
-def _add_balance_sheet(workbook, balance_sheet, company_overview):
+def _add_cashflow_sheet(workbook, cashflow):
+    worksheet = openpyxl_helper.add_sheet(
+        workbook=workbook,
+        name='Cashflow',
+        tab_color='92D050',
+        index=2,
+    )
+
+    top_left_cell_label = '{} #s in 1000s'.format(cashflow.currency)
+    all_report_dates_heading_row = [top_left_cell_label] + cashflow.report_dates
+    operations_row = ['Operations'] + cashflow.operations
+    financing_row = ['Financing'] + cashflow.financing
+    investing_row = ['Investing'] + cashflow.investing
+
+    cashflow_data = [
+        all_report_dates_heading_row,
+        operations_row,
+        financing_row,
+        investing_row,
+    ]
+    for row in cashflow_data:
+        worksheet.append(row)
+
+    num_table_rows = len(cashflow_data)
+    num_table_columns = len(cashflow_data[0])
+    openpyxl_helper.add_table(
+        worksheet=worksheet,
+        name='Cashflows',
+        num_rows=num_table_rows,
+        num_columns=num_table_columns,
+        style='blue',
+    )
+    openpyxl_helper.add_graph(
+        worksheet=worksheet,
+        title='Cashflows',
+        y_axis_label=cashflow.currency,
+        num_columns=num_table_columns,
+        num_rows=num_table_rows,
+        chart_type='line',
+    )
+
+    for i in range(15):
+        worksheet.append([''])
+
+    free_cash_flow = ['Free Cash Flow'] + cashflow.free_cash_flow
+
+    free_cash_flow_data = [
+        all_report_dates_heading_row,
+        free_cash_flow,
+    ]
+    for row in free_cash_flow_data:
+        worksheet.append(row)
+
+    num_table_rows = len(free_cash_flow_data)
+    num_table_columns = len(free_cash_flow_data[0])
+    openpyxl_helper.add_table(
+        worksheet=worksheet,
+        name='FCF',
+        row_offset=20,
+        num_rows=num_table_rows,
+        num_columns=num_table_columns,
+        style='purp',
+    )
+    openpyxl_helper.add_graph(
+        worksheet=worksheet,
+        title='FCF',
+        y_axis_label=cashflow.currency,
+        num_columns=num_table_columns,
+        num_rows=num_table_rows,
+        row_offset=20,
+        chart_type='area',
+    )
+
+def _add_balance_sheet(workbook, balance_sheet):
     worksheet = openpyxl_helper.add_sheet(
         workbook=workbook,
         name='Balance',
-        tab_color='0dff4d',
+        tab_color='FFFF00',
         index=1,
     )
 
@@ -235,14 +310,15 @@ def _add_balance_sheet(workbook, balance_sheet, company_overview):
         num_columns=num_table_columns,
         num_rows=num_table_rows,
         row_offset=95,
-        chart_type='bar',
+        chart_type='area',
     )
 
-def _add_income_sheet(workbook, income_statement, company_overview):
+def _add_income_sheet(workbook, income_statement, company_overview, free_cash_flow_ttm):
     worksheet = openpyxl_helper.add_sheet(
         workbook=workbook,
         name='Income',
         tab_color='ff9191',
+        index=0,
     )
 
     top_left_cell_label = '{} #s in 1000s'.format(income_statement.currency)
@@ -278,6 +354,7 @@ def _add_income_sheet(workbook, income_statement, company_overview):
         y_axis_label=income_statement.currency,
         num_columns=num_table_columns,
         num_rows=num_table_rows,
+        chart_type='line',
     )
 
     # this is dumb but it's the easiest way I've found to add rows deeper down a sheet
@@ -330,6 +407,9 @@ def _add_income_sheet(workbook, income_statement, company_overview):
     )
 
     # Add some random last remaining stats to round off a killer sheet >:)
+    price_to_fcf = 0
+    if free_cash_flow_ttm > 0:
+        price_to_fcf = round((company_overview.market_cap / free_cash_flow_ttm), 3)
     openpyxl_helper.add_cell(worksheet, 'G8', 'Fun Stats')
     openpyxl_helper.add_cell(worksheet, 'H8', 'Values')
     openpyxl_helper.add_cell(worksheet, 'G9', 'P/E Current')
@@ -338,14 +418,20 @@ def _add_income_sheet(workbook, income_statement, company_overview):
     openpyxl_helper.add_cell(worksheet, 'H10', company_overview.price_to_sales_ttm)
     openpyxl_helper.add_cell(worksheet, 'G11', 'P/B')
     openpyxl_helper.add_cell(worksheet, 'H11', company_overview.price_to_book)
-    openpyxl_helper.add_cell(worksheet, 'G12', 'EPS')
-    openpyxl_helper.add_cell(worksheet, 'H12', company_overview.earnings_per_share)
+    openpyxl_helper.add_cell(worksheet, 'G12', 'P/FCF')
+    openpyxl_helper.add_cell(worksheet, 'H12', price_to_fcf)
+    openpyxl_helper.add_cell(worksheet, 'G13', 'EPS')
+    openpyxl_helper.add_cell(worksheet, 'H13', company_overview.earnings_per_share)
+    openpyxl_helper.add_cell(worksheet, 'G14', 'Mcap 1000s')
+    openpyxl_helper.add_cell(worksheet, 'H14', company_overview.market_cap)
+    openpyxl_helper.add_cell(worksheet, 'G15', 'FCF TTM 1000s')
+    openpyxl_helper.add_cell(worksheet, 'H15', free_cash_flow_ttm)
     openpyxl_helper.add_table(
         worksheet=worksheet,
         name='Ratios',
         row_offset=8,
         column_offset=7,
-        num_rows=5,
+        num_rows=8,
         num_columns=2,
         style='black',
         showRowStripes=False,
