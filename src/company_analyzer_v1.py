@@ -12,6 +12,7 @@ def main():
     try:
         data = financial_data.FinancialData(stock_ticker)
     except api.StonkApiException as exc:
+        print(str(exc))
         return {
             'statusCode': 200,
             'headers': {},
