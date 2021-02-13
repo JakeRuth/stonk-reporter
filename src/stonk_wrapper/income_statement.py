@@ -7,10 +7,12 @@ class IncomeStatement:
         self._all_revenue = []
         self._revenue_growth = []
         self._revenue_growth_yoy = []
+        self._all_cost_of_revenue = []
 
         self._all_gross = []
         self._gross_growth = []
         self._gross_growth_yoy = []
+        self._all_gross_margin = []
 
         self._all_operating_income = []
         self._operating_income_growth = []
@@ -24,12 +26,20 @@ class IncomeStatement:
 
         for idx, report in enumerate(self._data):
             self._all_report_dates.append(report['fiscalDateEnding'])
+
             revenue = math_helper.format_number(report['totalRevenue'])
             self._all_revenue.append(revenue)
+
+            cost_of_revenue = math_helper.format_number(report['costOfRevenue'])
+            self._all_cost_of_revenue.append(cost_of_revenue)
+
             gross_profit = math_helper.format_number(report['grossProfit'])
             self._all_gross.append(gross_profit)
+            self._all_gross_margin.append(math_helper.percentify(gross_profit, revenue))
+
             operating_income = math_helper.format_number(report['operatingIncome'])
             self._all_operating_income.append(operating_income)
+
             net_income = math_helper.format_number(report['netIncome'])
             self._all_net_income.append(net_income)
 
@@ -82,6 +92,18 @@ class IncomeStatement:
         return self._all_revenue
 
     @property
+    def revenue_ttm(self):
+        return math_helper.get_ttm_or_error(self._all_revenue[:4])
+
+    @property
+    def all_cost_of_revenue(self):
+        return self._all_cost_of_revenue
+
+    @property
+    def cost_of_revenue_ttm(self):
+        return math_helper.get_ttm_or_error(self._all_cost_of_revenue[:4])
+
+    @property
     def revenue_growth(self):
         return self._revenue_growth
 
@@ -94,12 +116,24 @@ class IncomeStatement:
         return self._all_gross
 
     @property
+    def gross_ttm(self):
+        return math_helper.get_ttm_or_error(self._all_gross[:4])
+
+    @property
     def gross_growth(self):
         return self._gross_growth
 
     @property
     def gross_growth_yoy(self):
         return self._gross_growth_yoy
+
+    @property
+    def all_gross_margin(self):
+        return self._all_gross_margin
+
+    @property
+    def gross_margin_ttm(self):
+        return math_helper.percentify(self.gross_ttm, self.revenue_ttm)
 
     @property
     def all_operating_income(self):

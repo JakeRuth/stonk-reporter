@@ -10,8 +10,18 @@ def string_to_float(input):
         return 0
     return float(input)
 
+def percentify(number1, number2):
+    if number2 == 0:
+        return 0
+    return round(number1 / number2 * 100, 2)
+
 def calc_percent_increase(current, previous):
     if current <= 0 or previous <= 0:
         return 0
     increase = (current - previous) / previous
     return round(increase * 100, 2)
+
+def get_ttm_or_error(reports):
+    if 0 in reports:
+        return 'error'
+    return sum(reports[:4])
