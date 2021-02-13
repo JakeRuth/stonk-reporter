@@ -1,18 +1,28 @@
+import json
 import os
 
 import openpyxl as pyxl
 
 from excel import openpyxl_helper
-from stonk_wrapper import financial_data
+from stonk_wrapper import api, financial_data
 
 
 def main():
     stock_ticker = 'APHA'
-    data = financial_data.FinancialData(stock_ticker)
-    income_statement = data.income_statement_quarterly
+    try:
+        data = financial_data.FinancialData(stock_ticker)
+    except api.StonkApiException as exc:
+        return {
+            'statusCode': 200,
+            'headers': {},
+            'body': json.dumps({
+                'error': str(exc),
+            }),
+        }
+    income_statement = data.income_statement
     company_overview = data.company_overview
-    balance_sheet = data.balance_sheet_quarterly
-    cashflow = data.cashflow_quarterly
+    balance_sheet = data.balance_sheet
+    cashflow = data.cashflow
 
     workbook = pyxl.Workbook()
     _add_income_sheet(workbook, income_statement, company_overview, cashflow.free_cash_flow_ttm)

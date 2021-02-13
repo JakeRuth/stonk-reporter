@@ -6,38 +6,33 @@ from . import income_statement
 
 class FinancialData:
     def __init__(self, stonk_ticker):
-        api_wrapper = api.StonkApiWrapper(stonk_ticker, 'jkjk')
+        api_wrapper = api.AlphaVantageStonkApiWrapper(stonk_ticker, 'jkjk')
 
-        income_statement_json = api_wrapper.get_income_statement()
-        self._income_statement_quarterly = income_statement.IncomeStatement(
-            income_statement_json['quarterlyReports']
+        self._income_statement = income_statement.IncomeStatement(
+            api_wrapper.get_income_statements()
         )
-
-        balance_sheet_json = api_wrapper.get_balance_sheet()
-        self._balance_sheet_quarterly = balance_sheet.BalanceSheet(
-            balance_sheet_json['quarterlyReports']
+        self._balance_sheet = balance_sheet.BalanceSheet(
+            api_wrapper.get_balance_sheets()
         )
-
-        cashflow_json = api_wrapper.get_cashflow()
-        self._cashflow_quarterly = cashflow.Cashflow(
-            cashflow_json['quarterlyReports']
+        self._cashflow = cashflow.Cashflow(
+            api_wrapper.get_cashflows()
         )
-
-        company_overview_json = api_wrapper.get_company_overview()
-        self._company_overview = company_overview.CompanyOverview(company_overview_json)
+        self._company_overview = company_overview.CompanyOverview(
+            api_wrapper.get_company_overview()
+        )
 
     @property
-    def income_statement_quarterly(self):
-        return self._income_statement_quarterly
+    def income_statement(self):
+        return self._income_statement
 
     @property
-    def balance_sheet_quarterly(self):
-        return self._balance_sheet_quarterly
+    def balance_sheet(self):
+        return self._balance_sheet
 
     @property
     def company_overview(self):
         return self._company_overview
 
     @property
-    def cashflow_quarterly(self):
-        return self._cashflow_quarterly
+    def cashflow(self):
+        return self._cashflow

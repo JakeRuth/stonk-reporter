@@ -4,7 +4,7 @@ import requests
 class StonkApiException(Exception):
     pass
 
-class StonkApiWrapper:
+class AlphaVantageStonkApiWrapper:
     def __init__(self, stonk_ticker, api_key):
         self.api_key = api_key
         self.stonk_ticker = stonk_ticker
@@ -25,37 +25,32 @@ class StonkApiWrapper:
         return response
 
     # https://www.alphavantage.co/documentation/#income-statement
-    def get_income_statement(self):
-        # if self.stonk_ticker == 'APHA':
-        #     with open('stonk_wrapper/cached_api_calls/apha_income.json') as json_file:
-        #         print('Getting static income statement for APHA from cache')
-        #         return json.load(json_file)
-
-        return self._get_json('INCOME_STATEMENT')
+    def get_income_statements(self):
+        res = self._get_json('INCOME_STATEMENT')
+        income_statements = res.get('quarterlyReports')
+        if not income_statements:
+            raise StonkApiException('This stonk does not exist in the stonk data api we are using :(')
+        return income_statements
 
     # https://www.alphavantage.co/documentation/#cash-flow
-    def get_cashflow(self):
-        # if self.stonk_ticker == 'APHA':
-        #     with open('stonk_wrapper/cached_api_calls/apha_cashflow.json') as json_file:
-        #         print('Getting static cashflow for APHA from cache')
-        #         return json.load(json_file)
-
-        return self._get_json('CASH_FLOW')
+    def get_cashflows(self):
+        res = self._get_json('CASH_FLOW')
+        cashflows = res.get('quarterlyReports')
+        if not cashflows:
+            raise StonkApiException('This stonk does not exist in the stonk data api we are using :(')
+        return cashflows
 
     # https://www.alphavantage.co/documentation/#balance-sheet
-    def get_balance_sheet(self):
-        # if self.stonk_ticker == 'APHA':
-        #     with open('stonk_wrapper/cached_api_calls/apha_balance_sheet.json') as json_file:
-        #         print('Getting static balance sheet for APHA from cache')
-        #         return json.load(json_file)
-
-        return self._get_json('BALANCE_SHEET')
+    def get_balance_sheets(self):
+        res = self._get_json('BALANCE_SHEET')
+        balance_sheets = res.get('quarterlyReports')
+        if not balance_sheets:
+            raise StonkApiException('This stonk does not exist in the stonk data api we are using :(')
+        return balance_sheets
 
     # https://www.alphavantage.co/documentation/#company-overview
     def get_company_overview(self):
-        # if self.stonk_ticker == 'APHA':
-        #     with open('stonk_wrapper/cached_api_calls/apha_overview.json') as json_file:
-        #         print('Getting static overview for APHA from cache')
-        #         return json.load(json_file)
-
-        return self._get_json('OVERVIEW')
+        res = self._get_json('OVERVIEW')
+        if len(res.keys()) == 0:
+            raise StonkApiException('This stonk does not exist in the stonk data api we are using :(')
+        return res
