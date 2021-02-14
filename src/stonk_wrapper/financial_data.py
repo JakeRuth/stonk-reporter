@@ -3,6 +3,7 @@ from . import balance_sheet
 from . import cashflow
 from . import company_overview
 from . import income_statement
+from . import math_helper
 
 class FinancialData:
     def __init__(self, stonk_ticker):
@@ -36,3 +37,10 @@ class FinancialData:
     @property
     def cashflow(self):
         return self._cashflow
+
+    @property
+    def price_to_fcf(self):
+        return math_helper.simple_ratio(
+            self.company_overview.market_cap,
+            self.cashflow.free_cash_flow_ttm,
+        )

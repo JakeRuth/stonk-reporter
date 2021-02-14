@@ -16,9 +16,11 @@ class BalanceSheet:
         self._non_current_liabilities = []
         self._current_debt = []
         self._current_assets = []
+        self._current_ratios = []
         self._non_current_assets = []
         self._tangible_book_value = []
         self._long_term_debt = []
+        self._all_inventory = []
 
         for idx, report in enumerate(data):
             self._report_dates.append(report['fiscalDateEnding'])
@@ -52,11 +54,12 @@ class BalanceSheet:
             non_current_liabilities = math_helper.format_number(report['totalNonCurrentLiabilities'])
             self._non_current_liabilities.append(non_current_liabilities)
 
-            current_liabilities = math_helper.format_number(report['currentLongTermDebt'])
-            self._current_debt.append(current_liabilities)
+            current_long_term_debt = math_helper.format_number(report['currentLongTermDebt'])
+            self._current_debt.append(current_long_term_debt)
 
             current_assets = math_helper.format_number(report['totalCurrentAssets'])
             self._current_assets.append(current_assets)
+            self._current_ratios.append(math_helper.simple_ratio(current_assets, current_liabilities))
 
             non_current_assets = math_helper.format_number(report['totalNonCurrentAssets'])
             self._non_current_assets.append(non_current_assets)
@@ -66,6 +69,9 @@ class BalanceSheet:
 
             long_term_debt = math_helper.format_number(report['longTermDebt'])
             self._long_term_debt.append(long_term_debt)
+
+            inventory = math_helper.format_number(report['inventory'])
+            self._all_inventory.append(inventory)
 
     @property
     def currency(self):
@@ -128,6 +134,10 @@ class BalanceSheet:
         return self._current_assets
 
     @property
+    def current_ratios(self):
+        return self._current_ratios
+
+    @property
     def current_assets(self):
         return self._current_assets
 
@@ -142,3 +152,7 @@ class BalanceSheet:
     @property
     def long_term_debt(self):
         return self._long_term_debt
+
+    @property
+    def all_inventory(self):
+        return self._all_inventory

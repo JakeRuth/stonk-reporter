@@ -36,7 +36,9 @@ stonk_rows = {
     'Valuation': ['Valuation'],
     'P/FCF': ['P/FCF'],
     'P/E': ['P/E'],
-    'P/S': ['P/S'],
+    'EPS': ['EPS'],
+    'P/B': ['P/B'],
+    'P/S (TTM)': ['P/S'],
 }
 
 def main():
@@ -45,7 +47,7 @@ def main():
     for ticker in stonk_tickers:
         print(ticker)
         try:
-            data = financial_data.FinancialData(ticker)
+            stonk_data = financial_data.FinancialData(ticker)
         except api.StonkApiException as exc:
             print(str(exc))
             for idx, stonk_row_key in enumerate(stonk_rows.keys()):
@@ -55,40 +57,42 @@ def main():
                     stonk_rows[stonk_row_key].append('>.>')
             continue
 
-        income_statement = data.income_statement
-        company_overview = data.company_overview
-        balance_sheet = data.balance_sheet
-        cashflow = data.cashflow
+        income_statement = stonk_data.income_statement
+        company_overview = stonk_data.company_overview
+        balance_sheet = stonk_data.balance_sheet
+        cashflow = stonk_data.cashflow
 
         stonk_rows['Revenue (TTM)'].append(income_statement.revenue_ttm)
         stonk_rows['Cost of Revenue'].append(income_statement.cost_of_revenue_ttm)
         stonk_rows['Gross Profit'].append(income_statement.gross_ttm)
         stonk_rows['Gross Margin'].append(income_statement.gross_margin_ttm)
-        stonk_rows['Operating Expense'].append('')
-        stonk_rows['Operating Income'].append('')
-        stonk_rows['Operating Margin'].append('')
+        stonk_rows['Operating Expense'].append(income_statement.operating_expense_ttm)
+        stonk_rows['Operating Income'].append(income_statement.operating_income_ttm)
+        stonk_rows['Operating Margin'].append(income_statement.operating_margin_ttm)
         stonk_rows['blank1'].append('')
-        stonk_rows['Total Cash'].append('')
-        stonk_rows['Inventory'].append('')
-        stonk_rows['Total Current Assets'].append('')
-        stonk_rows['Total Current Liabilities'].append('')
-        stonk_rows['Current Ratio'].append('')
-        stonk_rows['Total Assets'].append('')
-        stonk_rows['Total Liabilities'].append('')
-        stonk_rows['Stock Holder Equity (B/V)'].append('')
-        stonk_rows['Goodwill'].append('')
-        stonk_rows['Intangible Assets'].append('')
-        stonk_rows['Total Tangible Assets'].append('')
-        stonk_rows['Total Liabilities 2'].append('')
-        stonk_rows['Tangible Book Value'].append('')
+        stonk_rows['Total Cash'].append(balance_sheet.cash[0])
+        stonk_rows['Inventory'].append(balance_sheet.all_inventory[0])
+        stonk_rows['Total Current Assets'].append(balance_sheet.current_assets[0])
+        stonk_rows['Total Current Liabilities'].append(balance_sheet.current_liabilities[0])
+        stonk_rows['Current Ratio'].append(balance_sheet.current_ratios[0])
+        stonk_rows['Total Assets'].append(balance_sheet.total_assets[0])
+        stonk_rows['Total Liabilities'].append(balance_sheet.total_liabilities[0])
+        stonk_rows['Stock Holder Equity (B/V)'].append(balance_sheet.share_holder_equity[0])
+        stonk_rows['Goodwill'].append(balance_sheet.goodwill[0])
+        stonk_rows['Intangible Assets'].append(balance_sheet.intangible_assets[0])
+        stonk_rows['Total Tangible Assets'].append(balance_sheet.total_tangible_assets[0])
+        stonk_rows['Total Liabilities 2'].append(balance_sheet.total_liabilities[0])
+        stonk_rows['Tangible Book Value'].append(balance_sheet._tangible_book_value[0])
         stonk_rows['blank2'].append('')
-        stonk_rows['Free Cash Flow (last q)'].append('')
-        stonk_rows['Free Cash Flow TTM'].append('')
+        stonk_rows['Free Cash Flow (last q)'].append(cashflow.free_cash_flow[0])
+        stonk_rows['Free Cash Flow TTM'].append(cashflow.free_cash_flow_ttm)
         stonk_rows['blank3'].append('')
-        stonk_rows['Valuation'].append('')
-        stonk_rows['P/FCF'].append('')
-        stonk_rows['P/E'].append('')
-        stonk_rows['P/S'].append('')
+        stonk_rows['Valuation'].append(company_overview.market_cap)
+        stonk_rows['P/FCF'].append(stonk_data.price_to_fcf)
+        stonk_rows['P/E'].append(company_overview.pe_ratio)
+        stonk_rows['EPS'].append(company_overview.earnings_per_share)
+        stonk_rows['P/B'].append(company_overview.price_to_book)
+        stonk_rows['P/S (TTM)'].append(company_overview.price_to_sales_ttm)
 
     workbook = pyxl.Workbook()
     worksheet = openpyxl_helper.add_sheet(

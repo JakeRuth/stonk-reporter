@@ -10,6 +10,11 @@ def string_to_float(input):
         return 0
     return float(input)
 
+def simple_ratio(number1, number2):
+    if number2 == 0:
+        return 0
+    return round(number1 / number2, 2)
+
 def percentify(number1, number2):
     if number2 == 0:
         return 0
@@ -22,6 +27,7 @@ def calc_percent_increase(current, previous):
     return round(increase * 100, 2)
 
 def get_ttm_or_error(reports):
-    if 0 in reports:
+    first_four = reports[:4]
+    if 0 in first_four:
         return 'error'
-    return sum(reports[:4])
+    return sum(first_four)

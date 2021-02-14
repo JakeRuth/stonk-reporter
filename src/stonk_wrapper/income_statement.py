@@ -17,6 +17,8 @@ class IncomeStatement:
         self._all_operating_income = []
         self._operating_income_growth = []
         self._operating_income_growth_yoy = []
+        self._all_operating_expense = []
+        self._all_operating_margin = []
 
         self._all_net_income = []
         self._net_income_growth = []
@@ -39,6 +41,8 @@ class IncomeStatement:
 
             operating_income = math_helper.format_number(report['operatingIncome'])
             self._all_operating_income.append(operating_income)
+            self._all_operating_expense.append(gross_profit - operating_income)
+            self._all_operating_margin.append(math_helper.percentify(operating_income, revenue))
 
             net_income = math_helper.format_number(report['netIncome'])
             self._all_net_income.append(net_income)
@@ -93,7 +97,7 @@ class IncomeStatement:
 
     @property
     def revenue_ttm(self):
-        return math_helper.get_ttm_or_error(self._all_revenue[:4])
+        return math_helper.get_ttm_or_error(self._all_revenue)
 
     @property
     def all_cost_of_revenue(self):
@@ -101,7 +105,7 @@ class IncomeStatement:
 
     @property
     def cost_of_revenue_ttm(self):
-        return math_helper.get_ttm_or_error(self._all_cost_of_revenue[:4])
+        return math_helper.get_ttm_or_error(self._all_cost_of_revenue)
 
     @property
     def revenue_growth(self):
@@ -117,7 +121,7 @@ class IncomeStatement:
 
     @property
     def gross_ttm(self):
-        return math_helper.get_ttm_or_error(self._all_gross[:4])
+        return math_helper.get_ttm_or_error(self._all_gross)
 
     @property
     def gross_growth(self):
@@ -140,12 +144,32 @@ class IncomeStatement:
         return self._all_operating_income
 
     @property
+    def operating_income_ttm(self):
+        return math_helper.get_ttm_or_error(self._all_operating_income)
+
+    @property
     def operating_income_growth(self):
         return self._operating_income_growth
 
     @property
     def operating_income_growth_yoy(self):
         return self._operating_income_growth_yoy
+
+    @property
+    def all_operating_expense(self):
+        return self._all_operating_expense
+
+    @property
+    def operating_expense_ttm(self):
+        return math_helper.get_ttm_or_error(self._all_operating_expense)
+
+    @property
+    def all_operating_margin(self):
+        return self._all_operating_margin
+
+    @property
+    def operating_margin_ttm(self):
+        return math_helper.percentify(self.operating_income_ttm, self.revenue_ttm)
 
     @property
     def all_net_income(self):
