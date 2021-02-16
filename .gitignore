@@ -4,8 +4,10 @@
 **/build
 **/static_json_data
 **/aws_playground
+**/aws-playground-2
 *.html
 *.xlsx
 *.json
 *.spec
+*.zip
 debug.log
