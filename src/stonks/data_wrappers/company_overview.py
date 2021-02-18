@@ -1,4 +1,4 @@
-from . import math_helper
+from stonks import math_helper
 
 class CompanyOverview:
     def __init__(self, overview_json):

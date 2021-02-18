@@ -6,7 +6,7 @@ class StonkApiException(Exception):
 
 # Little local file/caching utility for local devlopment to save $ on api calls
 def get_cached_api_filename(stonk_ticker, api_call):
-    return 'stonk_wrapper/cached_api_calls/{}_{}.json'.format(stonk_ticker, api_call).lower()
+    return 'stonks/cached_api_calls/{}_{}.json'.format(stonk_ticker, api_call).lower()
 
 def save_api_response(stonk_ticker, api_call, res_json):
     filename = get_cached_api_filename(stonk_ticker, api_call)
@@ -23,7 +23,7 @@ def query_api_cache(stonk_ticker, api_call):
             return json.load(json_file)
     except FileNotFoundError:
         print('No cache found for {}'.format(filename))
-    
+
 class AlphaVantageStonkApiWrapper:
     def __init__(self, stonk_ticker, api_key):
         self.api_key = api_key
@@ -34,7 +34,7 @@ class AlphaVantageStonkApiWrapper:
         cached_response = query_api_cache(self.stonk_ticker, api_function)
         if cached_response:
             return cached_response
-        
+
         url = 'https://www.alphavantage.co/query?function={}&symbol={}&apikey={}'.format(
             api_function,
             self.stonk_ticker,
@@ -46,7 +46,7 @@ class AlphaVantageStonkApiWrapper:
         over_api_request_throttle_limit = response.get('Note')
         if bool(over_api_request_throttle_limit):
             raise StonkApiException('Api request limit reached :( we are allowed 5 requests per minutes, and 500 daily')
-            
+
         save_api_response(self.stonk_ticker, api_function, response)
         return response
 

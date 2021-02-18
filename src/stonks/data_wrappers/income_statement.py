@@ -1,4 +1,4 @@
-from . import math_helper
+from stonks import math_helper
 
 class IncomeStatement:
     def __init__(self, data):

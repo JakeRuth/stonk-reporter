@@ -4,7 +4,7 @@ import os
 import openpyxl as pyxl
 
 from excel import openpyxl_helper
-from stonk_wrapper import api, financial_data
+from stonks import api, financial_data
 
 
 stonk_rows = {

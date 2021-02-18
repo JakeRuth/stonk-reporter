@@ -1,9 +1,10 @@
 from . import api
-from . import balance_sheet
-from . import cashflow
-from . import company_overview
-from . import income_statement
 from . import math_helper
+
+from stonks.data_wrappers import balance_sheet
+from stonks.data_wrappers import cashflow
+from stonks.data_wrappers import company_overview
+from stonks.data_wrappers import income_statement
 
 class FinancialData:
     def __init__(self, stonk_ticker):
