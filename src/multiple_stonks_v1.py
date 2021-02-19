@@ -4,7 +4,7 @@ import os
 import openpyxl as pyxl
 
 from excel import openpyxl_helper
-from stonks import api, financial_data
+from stonks import base_api, financial_data
 
 
 stonk_rows = {
@@ -48,7 +48,7 @@ def main():
         print(ticker)
         try:
             stonk_data = financial_data.FinancialData(ticker)
-        except api.StonkApiException as exc:
+        except base_api.StonkApiException as exc:
             print(str(exc))
             for idx, stonk_row_key in enumerate(stonk_rows.keys()):
                 if idx == 0:

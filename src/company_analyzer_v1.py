@@ -4,14 +4,14 @@ import os
 import openpyxl as pyxl
 
 from excel import openpyxl_helper
-from stonks import api, financial_data
+from stonks import base_api, financial_data
 
 
 def main():
     stock_ticker = 'APHA'
     try:
         data = financial_data.FinancialData(stock_ticker)
-    except api.StonkApiException as exc:
+    except base_api.StonkApiException as exc:
         print(str(exc))
         return {
             'statusCode': 200,

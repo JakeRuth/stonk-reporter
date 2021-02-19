@@ -1,4 +1,4 @@
-from . import api
+from . import alpha_vantage
 from . import math_helper
 
 from stonks.data_wrappers import balance_sheet
@@ -8,7 +8,7 @@ from stonks.data_wrappers import income_statement
 
 class FinancialData:
     def __init__(self, stonk_ticker):
-        api_wrapper = api.AlphaVantageStonkApiWrapper(stonk_ticker, 'jkjk')
+        api_wrapper = alpha_vantage.AlphaVantage(stonk_ticker, 'jkjk')
 
         self._income_statement = income_statement.IncomeStatement(
             api_wrapper.get_income_statements()
