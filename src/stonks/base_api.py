@@ -38,8 +38,16 @@ class BaseStonkApiWrapper:
             return cached_response
 
         response = requests.get(url).json()
-        save_api_response(self.stonk_ticker, api_function, self.api_name, response)
+        # This is kinda ugly, but for Alpha Vantage free tier this key indicates that we
+        # hit an api rate limit error, and we don't want to cache that
+        # TODO: Make an overridable method to return boolean that sub class can impl
+        if self.should_cache_api_response(response):
+            save_api_response(self.stonk_ticker, api_function, self.api_name, response)
         return response
+
+    # this can be overridden for bad api responses that would be very bad to cache for later
+    def should_cache_api_response(response):
+        return True
 
     def get_income_statements(self):
         raise NotImplementedError()

@@ -1,7 +1,7 @@
 from . import base_api
 
 
-class AlphaVantage(base_api.BaseStonkApiWrapper):
+class AlphaVantageApi(base_api.BaseStonkApiWrapper):
     def __init__(self, stonk_ticker, api_key):
         super().__init__(stonk_ticker, api_key, 'AV')
 
@@ -17,9 +17,13 @@ class AlphaVantage(base_api.BaseStonkApiWrapper):
         # their free tier is 5 requests per minute and 500 a day (ref: https://www.alphavantage.co/premium/)
         over_api_request_throttle_limit = response.get('Note')
         if bool(over_api_request_throttle_limit):
+            print(response)
             raise base_api.StonkApiException('Api request limit reached :( we are allowed 5 requests per minutes, and 500 daily')
 
         return response
+
+    def should_cache_api_response(self, response):
+        return not bool(response.get('Note'))
 
     # https://www.alphavantage.co/documentation/#income-statement
     def get_income_statements(self):
@@ -51,3 +55,21 @@ class AlphaVantage(base_api.BaseStonkApiWrapper):
         if len(res.keys()) == 0:
             raise base_api.StonkApiException('This stonk does not exist in the stonk data api we are using :(')
         return res
+
+
+class BalanceSheetDataKeys:
+    fiscal_date_ending = 'fiscalDateEnding'
+    total_assets = 'totalAssets'
+    total_liabilities = 'totalLiabilities'
+    intangible_assets = 'intangibleAssets'
+    goodwill = 'goodwill'
+    cash = 'cash'
+    current_liabilities = 'totalCurrentLiabilities'
+    non_current_liabilities = 'totalNonCurrentLiabilities'
+    current_long_term_debt = 'currentLongTermDebt'
+    current_assets = 'totalCurrentAssets'
+    non_current_assets = 'totalNonCurrentAssets'
+    tangible_book_value = 'netTangibleAssets'
+    long_term_debt = 'longTermDebt'
+    inventory = 'inventory'
+    currency = 'reportedCurrency'

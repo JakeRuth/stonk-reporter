@@ -1,8 +1,10 @@
 from stonks import math_helper
 
 class BalanceSheet:
-    def __init__(self, data):
+    def __init__(self, data, data_keys):
         self._data = data
+        self._data_keys = data_keys
+
         self._report_dates = []
         self._total_assets = []
         self._total_liabilities = []
@@ -23,17 +25,17 @@ class BalanceSheet:
         self._all_inventory = []
 
         for idx, report in enumerate(data):
-            self._report_dates.append(report['fiscalDateEnding'])
-            total_assets = math_helper.format_number(report['totalAssets'])
+            self._report_dates.append(report[data_keys.fiscal_date_ending])
+            total_assets = math_helper.format_number(report[data_keys.total_assets])
             self._total_assets.append(total_assets)
 
-            total_liabilities = math_helper.format_number(report['totalLiabilities'])
+            total_liabilities = math_helper.format_number(report[data_keys.total_liabilities])
             self._total_liabilities.append(total_liabilities)
 
-            intangible_assets = math_helper.format_number(report['intangibleAssets'])
+            intangible_assets = math_helper.format_number(report[data_keys.intangible_assets])
             self._intangible_assets.append(intangible_assets)
 
-            goodwill = math_helper.format_number(report['goodwill'])
+            goodwill = math_helper.format_number(report[data_keys.goodwill])
             self._goodwill.append(goodwill)
 
             total_intanglible_assets = intangible_assets + goodwill
@@ -45,37 +47,37 @@ class BalanceSheet:
             share_holder_equity = total_assets - total_liabilities
             self._share_holder_equity.append(share_holder_equity)
 
-            cash = math_helper.format_number(report['cash'])
+            cash = math_helper.format_number(report[data_keys.cash])
             self._cash.append(cash)
 
-            current_liabilities = math_helper.format_number(report['totalCurrentLiabilities'])
+            current_liabilities = math_helper.format_number(report[data_keys.current_liabilities])
             self._current_liabilities.append(current_liabilities)
 
-            non_current_liabilities = math_helper.format_number(report['totalNonCurrentLiabilities'])
+            non_current_liabilities = math_helper.format_number(report[data_keys.non_current_liabilities])
             self._non_current_liabilities.append(non_current_liabilities)
 
-            current_long_term_debt = math_helper.format_number(report['currentLongTermDebt'])
+            current_long_term_debt = math_helper.format_number(report[data_keys.current_long_term_debt])
             self._current_debt.append(current_long_term_debt)
 
-            current_assets = math_helper.format_number(report['totalCurrentAssets'])
+            current_assets = math_helper.format_number(report[data_keys.current_assets])
             self._current_assets.append(current_assets)
             self._current_ratios.append(math_helper.simple_ratio(current_assets, current_liabilities))
 
-            non_current_assets = math_helper.format_number(report['totalNonCurrentAssets'])
+            non_current_assets = math_helper.format_number(report[data_keys.non_current_assets])
             self._non_current_assets.append(non_current_assets)
 
-            tangible_book_value = math_helper.format_number(report['netTangibleAssets'])
+            tangible_book_value = math_helper.format_number(report[data_keys.tangible_book_value])
             self._tangible_book_value.append(tangible_book_value)
 
-            long_term_debt = math_helper.format_number(report['longTermDebt'])
+            long_term_debt = math_helper.format_number(report[data_keys.long_term_debt])
             self._long_term_debt.append(long_term_debt)
 
-            inventory = math_helper.format_number(report['inventory'])
+            inventory = math_helper.format_number(report[data_keys.inventory])
             self._all_inventory.append(inventory)
 
     @property
     def currency(self):
-        return self._data[0]['reportedCurrency']
+        return self._data[0][self._data_keys.currency]
 
     @property
     def report_dates(self):
