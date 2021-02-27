@@ -83,3 +83,13 @@ class CashflowDataKeys:
     fiscal_date_ending = 'fiscalDateEnding'
     investing = 'cashflowFromInvestment'
     operations = 'operatingCashflow'
+
+
+class IncomeStatementDataKeys:
+    cost_of_revenue = 'costOfRevenue'
+    currency = 'reportedCurrency'
+    fiscal_date_ending = 'fiscalDateEnding'
+    gross_profit = 'grossProfit'
+    net_income = 'netIncome'
+    operating_income = 'operatingIncome'
+    revenue = 'totalRevenue'

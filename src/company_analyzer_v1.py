@@ -7,8 +7,7 @@ from excel import openpyxl_helper
 from stonks import base_api, financial_data
 
 
-def main():
-    stock_ticker = 'APHA'
+def main(stock_ticker):
     try:
         data = financial_data.FinancialData(stock_ticker)
     except base_api.StonkApiException as exc:
@@ -448,4 +447,4 @@ def _add_income_sheet(workbook, income_statement, company_overview, free_cash_fl
         showRowStripes=False,
     )
 
-main()
+main('APHA')

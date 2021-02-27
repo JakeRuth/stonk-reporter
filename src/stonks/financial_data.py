@@ -11,7 +11,8 @@ class FinancialData:
         api_wrapper = alpha_vantage_api.AlphaVantageApi(stonk_ticker, 'jkjk')
 
         self._income_statement = income_statement.IncomeStatement(
-            api_wrapper.get_income_statements()
+            api_wrapper.get_income_statements(),
+            alpha_vantage_api.IncomeStatementDataKeys
         )
         self._balance_sheet = balance_sheet.BalanceSheet(
             api_wrapper.get_balance_sheets(),

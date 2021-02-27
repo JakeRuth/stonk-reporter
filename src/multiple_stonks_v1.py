@@ -41,8 +41,7 @@ stonk_rows = {
     'P/S (TTM)': ['P/S'],
 }
 
-def main():
-    stonk_tickers = ['GOOG', 'AMZN', 'AAPL', 'FB', 'SNAP', 'APHA', 'TLRY', 'BABA', 'TCNFF']
+def main(stonk_tickers):
     income_statement = None  # Used outside for loop to get currency
     for ticker in stonk_tickers:
         print(ticker)
@@ -120,4 +119,4 @@ def main():
     workbook.save(filename)
     os.startfile(filename)
 
-main()
+main(['GOOG', 'AMZN', 'AAPL', 'FB', 'SNAP', 'APHA', 'TLRY', 'BABA', 'TCNFF'])

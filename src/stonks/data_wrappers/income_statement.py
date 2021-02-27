@@ -1,8 +1,9 @@
 from stonks import math_helper
 
 class IncomeStatement:
-    def __init__(self, data):
+    def __init__(self, data, data_keys):
         self._data = data
+        self._data_keys = data_keys
 
         self._all_revenue = []
         self._revenue_growth = []
@@ -27,24 +28,24 @@ class IncomeStatement:
         self._all_report_dates = []
 
         for idx, report in enumerate(self._data):
-            self._all_report_dates.append(report['fiscalDateEnding'])
+            self._all_report_dates.append(report[data_keys.fiscal_date_ending])
 
-            revenue = math_helper.format_number(report['totalRevenue'])
+            revenue = math_helper.format_number(report[data_keys.revenue])
             self._all_revenue.append(revenue)
 
-            cost_of_revenue = math_helper.format_number(report['costOfRevenue'])
+            cost_of_revenue = math_helper.format_number(report[data_keys.cost_of_revenue])
             self._all_cost_of_revenue.append(cost_of_revenue)
 
-            gross_profit = math_helper.format_number(report['grossProfit'])
+            gross_profit = math_helper.format_number(report[data_keys.gross_profit])
             self._all_gross.append(gross_profit)
             self._all_gross_margin.append(math_helper.percentify(gross_profit, revenue))
 
-            operating_income = math_helper.format_number(report['operatingIncome'])
+            operating_income = math_helper.format_number(report[data_keys.operating_income])
             self._all_operating_income.append(operating_income)
             self._all_operating_expense.append(gross_profit - operating_income)
             self._all_operating_margin.append(math_helper.percentify(operating_income, revenue))
 
-            net_income = math_helper.format_number(report['netIncome'])
+            net_income = math_helper.format_number(report[data_keys.net_income])
             self._all_net_income.append(net_income)
 
             revenue_growth = 0
@@ -52,16 +53,16 @@ class IncomeStatement:
             operating_income_growth = 0
             net_income_growth = 0
             if idx < len(self._data) - 1:
-                previous_revenue = math_helper.format_number(self._data[idx + 1]['totalRevenue'])
+                previous_revenue = math_helper.format_number(self._data[idx + 1][data_keys.revenue])
                 revenue_growth = math_helper.calc_percent_increase(revenue, previous_revenue)
 
-                previous_gross = math_helper.format_number(self._data[idx + 1]['grossProfit'])
+                previous_gross = math_helper.format_number(self._data[idx + 1][data_keys.gross_profit])
                 gross_growth = math_helper.calc_percent_increase(gross_profit, previous_gross)
 
-                previous_operating_income = math_helper.format_number(self._data[idx + 1]['operatingIncome'])
+                previous_operating_income = math_helper.format_number(self._data[idx + 1][data_keys.operating_income])
                 operating_income_growth = math_helper.calc_percent_increase(operating_income, previous_operating_income)
 
-                previous_net_income = math_helper.format_number(self._data[idx + 1]['netIncome'])
+                previous_net_income = math_helper.format_number(self._data[idx + 1][data_keys.net_income])
                 net_income_growth = math_helper.calc_percent_increase(net_income, previous_net_income)
 
             self._revenue_growth.append(revenue_growth)
@@ -71,25 +72,25 @@ class IncomeStatement:
 
             # Only add every 4th report, since we want yearly results, and this is a quarterly iteration
             if idx % 4 == 0 and idx < len(self._data) - 4:
-                previous_revenue = math_helper.format_number(self._data[idx + 4]['totalRevenue'])
+                previous_revenue = math_helper.format_number(self._data[idx + 4][data_keys.revenue])
                 revenue_growth_yoy = math_helper.calc_percent_increase(revenue, previous_revenue)
                 self._revenue_growth_yoy.append(revenue_growth_yoy)
 
-                previous_gross = math_helper.format_number(self._data[idx + 4]['grossProfit'])
+                previous_gross = math_helper.format_number(self._data[idx + 4][data_keys.gross_profit])
                 gross_growth_yoy = math_helper.calc_percent_increase(gross_profit, previous_gross)
                 self._gross_growth_yoy.append(gross_growth_yoy)
 
-                previous_operating_income = math_helper.format_number(self._data[idx + 4]['operatingIncome'])
+                previous_operating_income = math_helper.format_number(self._data[idx + 4][data_keys.operating_income])
                 operating_income_growth_yoy = math_helper.calc_percent_increase(operating_income, previous_operating_income)
                 self._operating_income_growth_yoy.append(operating_income_growth_yoy)
 
-                previous_net_income = math_helper.format_number(self._data[idx + 4]['netIncome'])
+                previous_net_income = math_helper.format_number(self._data[idx + 4][data_keys.net_income])
                 net_income_growth_yoy = math_helper.calc_percent_increase(net_income, previous_net_income)
                 self._net_income_growth_yoy.append(net_income_growth_yoy)
 
     @property
     def currency(self):
-        return self._data[0]['reportedCurrency']
+        return self._data[0][self._data_keys.currency]
 
     @property
     def all_revenue(self):
