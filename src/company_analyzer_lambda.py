@@ -1,3 +1,5 @@
+import base64
+
 from stonks import base_api
 
 from . import company_analyzer_v1

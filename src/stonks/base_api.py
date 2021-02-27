@@ -35,7 +35,7 @@ def get_cached_api_filename(stonk_ticker, api_call, api_name):
 def save_api_response(stonk_ticker, api_call, api_name, res_json):
     filename = get_cached_api_filename(stonk_ticker, api_call, api_name)
     full_path = '/tmp/{}'.format(filename)
-    file = open(filename, 'w+')
+    file = open(full_path, 'w+')
     file.write(json.dumps(res_json))
     file.close()
 

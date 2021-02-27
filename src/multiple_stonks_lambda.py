@@ -1,4 +1,6 @@
-from . import multiple_stonks_v1
+import base64
+
+import multiple_stonks_v1
 
 def lambda_handler(event, context):
     stonk_tickers = event["queryStringParameters"]['ticker'].strip().split(',')
