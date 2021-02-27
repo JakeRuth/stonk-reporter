@@ -7,7 +7,7 @@ from excel import openpyxl_helper
 from stonks import base_api, financial_data
 
 
-def main(stock_ticker):
+def run(stock_ticker):
     try:
         data = financial_data.FinancialData(stock_ticker)
     except base_api.StonkApiException as exc:
@@ -28,9 +28,8 @@ def main(stock_ticker):
     _add_income_sheet(workbook, income_statement, company_overview, cashflow.free_cash_flow_ttm)
     _add_balance_sheet(workbook, balance_sheet)
     _add_cashflow_sheet(workbook, cashflow)
-    filename = '{}_overview_v1.xlsx'.format(stock_ticker)
-    workbook.save(filename)
-    os.startfile(filename)
+
+    return workbook
 
 def _add_cashflow_sheet(workbook, cashflow):
     worksheet = openpyxl_helper.add_sheet(
@@ -447,4 +446,10 @@ def _add_income_sheet(workbook, income_statement, company_overview, free_cash_fl
         showRowStripes=False,
     )
 
-main('APHA')
+def run_local():
+    stonk_ticker = 'APHA'
+    workbook = run(stonk_ticker)
+    filename = '{}_overview_v1.xlsx'.format(stonk_ticker)
+    workbook.save(filename)
+    os.startfile(filename)
+run_local()
