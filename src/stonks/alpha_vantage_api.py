@@ -2,8 +2,8 @@ from . import base_api
 
 
 class AlphaVantageApi(base_api.BaseStonkApiWrapper):
-    def __init__(self, stonk_ticker, api_key):
-        super().__init__(stonk_ticker, api_key, 'AV')
+    def __init__(self, stonk_ticker, api_key, developer_mode):
+        super().__init__(stonk_ticker, api_key, 'AV', developer_mode)
 
     # See base class for init args
     def _get_json(self, api_function):

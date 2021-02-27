@@ -7,8 +7,12 @@ from stonks.data_wrappers import company_overview
 from stonks.data_wrappers import income_statement
 
 class FinancialData:
-    def __init__(self, stonk_ticker):
-        api_wrapper = alpha_vantage_api.AlphaVantageApi(stonk_ticker, 'jkjk')
+    def __init__(self, stonk_ticker, developer_mode=False):
+        api_wrapper = alpha_vantage_api.AlphaVantageApi(
+            stonk_ticker,
+            'jkjk',
+            developer_mode=developer_mode,
+        )
 
         self._income_statement = income_statement.IncomeStatement(
             api_wrapper.get_income_statements(),

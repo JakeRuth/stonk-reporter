@@ -41,12 +41,12 @@ stonk_rows = {
     'P/S (TTM)': ['P/S'],
 }
 
-def run(stonk_tickers):
+def run(stonk_tickers, developer_mode=False):
     income_statement = None  # Used outside for loop to get currency
     for ticker in stonk_tickers:
         print(ticker)
         try:
-            stonk_data = financial_data.FinancialData(ticker)
+            stonk_data = financial_data.FinancialData(ticker, developer_mode)
         except base_api.StonkApiException as exc:
             print(str(exc))
             for idx, stonk_row_key in enumerate(stonk_rows.keys()):
@@ -128,7 +128,7 @@ def run_local():
         'TLRY',
         'BABA',
         'TCNFF',
-    ])
+    ], True)
 
     filename = '_multiple_stonks.xlsx'
     workbook.save(filename)
