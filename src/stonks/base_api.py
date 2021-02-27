@@ -7,7 +7,7 @@ class StonkApiException(Exception):
 
 # Little local file/caching utility for local devlopment to save $ on api calls
 def get_cached_api_filename(stonk_ticker, api_call, api_name):
-    return 'stonks/cached_api_calls/{}_{}_{}.json'.format(stonk_ticker, api_call, api_name).lower()
+    return 'src/stonks/cached_api_calls/{}_{}_{}.json'.format(stonk_ticker, api_call, api_name).lower()
 
 def save_api_response(stonk_ticker, api_call, api_name, res_json):
     filename = get_cached_api_filename(stonk_ticker, api_call, api_name)

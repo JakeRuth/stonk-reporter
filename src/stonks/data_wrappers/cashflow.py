@@ -1,8 +1,10 @@
 from stonks import math_helper
 
 class Cashflow:
-    def __init__(self, data):
+    def __init__(self, data, data_keys):
         self._data = data
+        self._data_keys = data_keys
+
         self._report_dates = []
         self._operations = []
         self._investing = []
@@ -14,28 +16,28 @@ class Cashflow:
         self._change_in_cash = []
 
         for idx, report in enumerate(data):
-            self._report_dates.append(report['fiscalDateEnding'])
-            operations = math_helper.format_number(report['operatingCashflow'])
+            self._report_dates.append(report[data_keys.fiscal_date_ending])
+            operations = math_helper.format_number(report[data_keys.operations])
             self._operations.append(operations)
 
-            investing = math_helper.format_number(report['cashflowFromInvestment'])
+            investing = math_helper.format_number(report[data_keys.investing])
             self._investing.append(investing)
 
-            financing = math_helper.format_number(report['cashflowFromFinancing'])
+            financing = math_helper.format_number(report[data_keys.financing])
             self._financing.append(financing)
 
-            capex = math_helper.format_number(report['capitalExpenditures'])
+            capex = math_helper.format_number(report[data_keys.capex])
             self._capex.append(capex)
 
             free_cash_flow = operations - capex
             self._free_cash_flow.append(free_cash_flow)
 
-            change_in_cash = math_helper.format_number(report['changeInCash'])
+            change_in_cash = math_helper.format_number(report[data_keys.change_in_cash])
             self._change_in_cash.append(change_in_cash)
 
     @property
     def currency(self):
-        return self._data[0]['reportedCurrency']
+        return self._data[0][self._data_keys.fiscal_date_ending]
 
     @property
     def report_dates(self):

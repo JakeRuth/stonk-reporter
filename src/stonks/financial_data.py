@@ -18,7 +18,8 @@ class FinancialData:
             alpha_vantage_api.BalanceSheetDataKeys
         )
         self._cashflow = cashflow.Cashflow(
-            api_wrapper.get_cashflows()
+            api_wrapper.get_cashflows(),
+            alpha_vantage_api.CashflowDataKeys
         )
         self._company_overview = company_overview.CompanyOverview(
             api_wrapper.get_company_overview()
