@@ -41,7 +41,7 @@ stonk_rows = {
     'P/S (TTM)': ['P/S'],
 }
 
-def main(stonk_tickers):
+def run(stonk_tickers):
     income_statement = None  # Used outside for loop to get currency
     for ticker in stonk_tickers:
         print(ticker)
@@ -115,8 +115,21 @@ def main(stonk_tickers):
         num_columns=len(stonk_tickers) + 1,
         style='blue',
     )
+    return workbook
+
+def run_local():
+    workbook = run([
+        'GOOG',
+        'AMZN',
+        'AAPL',
+        'FB',
+        'SNAP',
+        'APHA',
+        'TLRY',
+        'BABA',
+        'TCNFF',
+    ])
+
     filename = '_multiple_stonks.xlsx'
     workbook.save(filename)
     os.startfile(filename)
-
-main(['GOOG', 'AMZN', 'AAPL', 'FB', 'SNAP', 'APHA', 'TLRY', 'BABA', 'TCNFF'])
