@@ -1,34 +1,36 @@
-from . import alpha_vantage_api
+from . import iex_cloud_api
 from . import math_helper
 
 from stonks.data_wrappers import balance_sheet
 from stonks.data_wrappers import cashflow
-from stonks.data_wrappers import company_overview
+from stonks.data_wrappers import iex_company_overview
 from stonks.data_wrappers import income_statement
 
 class FinancialData:
     def __init__(self, stonk_ticker, developer_mode=False):
-        api_wrapper = alpha_vantage_api.AlphaVantageApi(
+        api_wrapper = iex_cloud_api.IexCloudApi(
             stonk_ticker,
-            'jkjk',
+            'nooo',
             developer_mode=developer_mode,
         )
 
         self._income_statement = income_statement.IncomeStatement(
             api_wrapper.get_income_statements(),
-            alpha_vantage_api.IncomeStatementDataKeys
+            iex_cloud_api.IncomeStatementDataKeys,
         )
         self._balance_sheet = balance_sheet.BalanceSheet(
             api_wrapper.get_balance_sheets(),
-            alpha_vantage_api.BalanceSheetDataKeys
+            iex_cloud_api.BalanceSheetDataKeys,
         )
         self._cashflow = cashflow.Cashflow(
             api_wrapper.get_cashflows(),
-            alpha_vantage_api.CashflowDataKeys
+            iex_cloud_api.CashflowDataKeys,
         )
-        self._company_overview = company_overview.CompanyOverview(
+        self._company_overview = iex_company_overview.IexCompanyOverview(
             api_wrapper.get_company_overview(),
-            alpha_vantage_api.CompanyOverviewDataKeys
+            self._income_statement,
+            self._balance_sheet,
+            self._cashflow
         )
 
     @property
@@ -46,10 +48,3 @@ class FinancialData:
     @property
     def cashflow(self):
         return self._cashflow
-
-    @property
-    def price_to_fcf(self):
-        return math_helper.simple_ratio(
-            self.company_overview.market_cap,
-            self.cashflow.free_cash_flow_ttm,
-        )

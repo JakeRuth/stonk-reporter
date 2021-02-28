@@ -11,7 +11,7 @@ def string_to_float(input):
     return float(input)
 
 def simple_ratio(number1, number2):
-    if number2 == 0:
+    if number2 <= 0:
         return 0
     return round(number1 / number2, 2)
 

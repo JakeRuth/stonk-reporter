@@ -25,7 +25,7 @@ def run(stock_ticker, developer_mode=False):
     cashflow = data.cashflow
 
     workbook = pyxl.Workbook()
-    _add_income_sheet(workbook, income_statement, company_overview, cashflow.free_cash_flow_ttm)
+    _add_income_sheet(workbook, income_statement, company_overview, cashflow)
     _add_balance_sheet(workbook, balance_sheet)
     _add_cashflow_sheet(workbook, cashflow)
 
@@ -322,7 +322,7 @@ def _add_balance_sheet(workbook, balance_sheet):
         chart_type='area',
     )
 
-def _add_income_sheet(workbook, income_statement, company_overview, free_cash_flow_ttm):
+def _add_income_sheet(workbook, income_statement, company_overview, cashflow):
     worksheet = openpyxl_helper.add_sheet(
         workbook=workbook,
         name='Income',
@@ -415,10 +415,6 @@ def _add_income_sheet(workbook, income_statement, company_overview, free_cash_fl
         style='purp',
     )
 
-    # Add some random last remaining stats to round off a killer sheet >:)
-    price_to_fcf = 0
-    if free_cash_flow_ttm > 0:
-        price_to_fcf = round((company_overview.market_cap / free_cash_flow_ttm), 3)
     openpyxl_helper.add_cell(worksheet, 'G8', 'Fun Stats')
     openpyxl_helper.add_cell(worksheet, 'H8', 'Values')
     openpyxl_helper.add_cell(worksheet, 'G9', 'P/E Current')
@@ -428,13 +424,13 @@ def _add_income_sheet(workbook, income_statement, company_overview, free_cash_fl
     openpyxl_helper.add_cell(worksheet, 'G11', 'P/B')
     openpyxl_helper.add_cell(worksheet, 'H11', company_overview.price_to_book)
     openpyxl_helper.add_cell(worksheet, 'G12', 'P/FCF')
-    openpyxl_helper.add_cell(worksheet, 'H12', price_to_fcf)
+    openpyxl_helper.add_cell(worksheet, 'H12', company_overview.price_to_fcf)
     openpyxl_helper.add_cell(worksheet, 'G13', 'EPS')
     openpyxl_helper.add_cell(worksheet, 'H13', company_overview.earnings_per_share)
     openpyxl_helper.add_cell(worksheet, 'G14', 'Mcap 1000s')
     openpyxl_helper.add_cell(worksheet, 'H14', company_overview.market_cap)
     openpyxl_helper.add_cell(worksheet, 'G15', 'FCF TTM 1000s')
-    openpyxl_helper.add_cell(worksheet, 'H15', free_cash_flow_ttm)
+    openpyxl_helper.add_cell(worksheet, 'H15', cashflow.free_cash_flow_ttm)
     openpyxl_helper.add_table(
         worksheet=worksheet,
         name='Ratios',
@@ -452,3 +448,4 @@ def run_local():
     filename = '{}_overview_v1.xlsx'.format(stonk_ticker)
     workbook.save(filename)
     os.startfile(filename)
+run_local()

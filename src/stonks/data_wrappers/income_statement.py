@@ -177,6 +177,10 @@ class IncomeStatement:
         return self._all_net_income
 
     @property
+    def net_income_ttm(self):
+        return math_helper.get_ttm_or_error(self._all_net_income)
+
+    @property
     def net_income_growth(self):
         return self._net_income_growth
 

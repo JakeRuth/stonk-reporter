@@ -53,8 +53,7 @@ class BalanceSheet:
             current_liabilities = math_helper.format_number(report[data_keys.current_liabilities])
             self._current_liabilities.append(current_liabilities)
 
-            non_current_liabilities = math_helper.format_number(report[data_keys.non_current_liabilities])
-            self._non_current_liabilities.append(non_current_liabilities)
+            self._non_current_liabilities.append(total_liabilities - current_liabilities)
 
             current_long_term_debt = math_helper.format_number(report[data_keys.current_long_term_debt])
             self._current_debt.append(current_long_term_debt)
@@ -63,8 +62,7 @@ class BalanceSheet:
             self._current_assets.append(current_assets)
             self._current_ratios.append(math_helper.simple_ratio(current_assets, current_liabilities))
 
-            non_current_assets = math_helper.format_number(report[data_keys.non_current_assets])
-            self._non_current_assets.append(non_current_assets)
+            self._non_current_assets.append(total_assets - current_assets)
 
             tangible_book_value = math_helper.format_number(report[data_keys.tangible_book_value])
             self._tangible_book_value.append(tangible_book_value)

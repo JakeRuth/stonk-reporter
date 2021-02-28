@@ -81,7 +81,7 @@ class BaseStonkApiWrapper:
         return response
 
     # this can be overridden for bad api responses that would be very bad to cache for later
-    def should_cache_api_response(response):
+    def should_cache_api_response(self, response):
         return True
 
     def get_income_statements(self):

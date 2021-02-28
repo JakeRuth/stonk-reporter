@@ -40,7 +40,7 @@ def run(stonk_tickers, developer_mode=False):
         'EPS': ['EPS'],
         'P/B': ['P/B'],
         'P/S (TTM)': ['P/S'],
-    }    
+    }
     income_statement = None  # Used outside for loop to get currency
     for ticker in stonk_tickers:
         print(ticker)
@@ -86,7 +86,7 @@ def run(stonk_tickers, developer_mode=False):
         stonk_rows['Free Cash Flow TTM'].append(cashflow.free_cash_flow_ttm)
         stonk_rows['blank3'].append('')
         stonk_rows['Valuation'].append(company_overview.market_cap)
-        stonk_rows['P/FCF'].append(stonk_data.price_to_fcf)
+        stonk_rows['P/FCF'].append(company_overview.price_to_fcf)
         stonk_rows['P/E'].append(company_overview.pe_ratio)
         stonk_rows['EPS'].append(company_overview.earnings_per_share)
         stonk_rows['P/B'].append(company_overview.price_to_book)

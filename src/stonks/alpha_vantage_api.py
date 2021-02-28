@@ -5,7 +5,6 @@ class AlphaVantageApi(base_api.BaseStonkApiWrapper):
     def __init__(self, stonk_ticker, api_key, developer_mode):
         super().__init__(stonk_ticker, api_key, 'AV', developer_mode)
 
-    # See base class for init args
     def _get_json(self, api_function):
         url = 'https://www.alphavantage.co/query?function={}&symbol={}&apikey={}'.format(
             api_function,
@@ -68,8 +67,6 @@ class BalanceSheetDataKeys:
     intangible_assets = 'intangibleAssets'
     inventory = 'inventory'
     long_term_debt = 'longTermDebt'
-    non_current_assets = 'totalNonCurrentAssets'
-    non_current_liabilities = 'totalNonCurrentLiabilities'
     tangible_book_value = 'netTangibleAssets'
     total_assets = 'totalAssets'
     total_liabilities = 'totalLiabilities'
