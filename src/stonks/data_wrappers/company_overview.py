@@ -1,12 +1,12 @@
 from stonks import math_helper
 
 class CompanyOverview:
-    def __init__(self, overview_json):
-        self._pe_ratio = math_helper.string_to_float(overview_json['PERatio'])
-        self._price_to_sales_ttm = math_helper.string_to_float(overview_json['PriceToSalesRatioTTM'])
-        self._price_to_book = math_helper.string_to_float(overview_json['PriceToBookRatio'])
-        self._earnings_per_share = math_helper.string_to_float(overview_json['EPS'])
-        self._market_cap = math_helper.format_number(overview_json['MarketCapitalization'])
+    def __init__(self, overview_json, data_keys):
+        self._pe_ratio = math_helper.string_to_float(overview_json[data_keys.pe_ratio])
+        self._price_to_sales_ttm = math_helper.string_to_float(overview_json[data_keys.ps_ratio])
+        self._price_to_book = math_helper.string_to_float(overview_json[data_keys.pb_ratio])
+        self._earnings_per_share = math_helper.string_to_float(overview_json[data_keys.eps])
+        self._market_cap = math_helper.format_number(overview_json[data_keys.market_cap])
 
     @property
     def pe_ratio(self):

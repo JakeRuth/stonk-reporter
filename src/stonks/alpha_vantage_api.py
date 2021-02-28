@@ -93,3 +93,11 @@ class IncomeStatementDataKeys:
     net_income = 'netIncome'
     operating_income = 'operatingIncome'
     revenue = 'totalRevenue'
+
+
+class CompanyOverviewDataKeys:
+    eps = 'EPS'
+    market_cap = 'MarketCapitalization'
+    pb_ratio = 'PriceToBookRatio'
+    pe_ratio = 'PERatio'
+    ps_ratio = 'PriceToSalesRatioTTM'

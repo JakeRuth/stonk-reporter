@@ -27,7 +27,8 @@ class FinancialData:
             alpha_vantage_api.CashflowDataKeys
         )
         self._company_overview = company_overview.CompanyOverview(
-            api_wrapper.get_company_overview()
+            api_wrapper.get_company_overview(),
+            alpha_vantage_api.CompanyOverviewDataKeys
         )
 
     @property
