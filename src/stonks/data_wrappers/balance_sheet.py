@@ -64,7 +64,11 @@ class BalanceSheet:
 
             self._non_current_assets.append(total_assets - current_assets)
 
-            tangible_book_value = math_helper.format_number(report[data_keys.tangible_book_value])
+            tangible_book_value = report.get(data_keys.tangible_book_value)
+            if not tangible_book_value:
+                tangible_book_value = total_liabilities - total_tangible_assets
+            else:
+                tangible_book_value = math_helper.format_number(tangible_book_value)
             self._tangible_book_value.append(tangible_book_value)
 
             long_term_debt = math_helper.format_number(report[data_keys.long_term_debt])

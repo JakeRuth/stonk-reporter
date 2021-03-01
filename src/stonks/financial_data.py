@@ -1,37 +1,58 @@
+from . import alpha_vantage_api
 from . import iex_cloud_api
 from . import math_helper
 
 from stonks.data_wrappers import balance_sheet
 from stonks.data_wrappers import cashflow
+from stonks.data_wrappers import company_overview
 from stonks.data_wrappers import iex_company_overview
 from stonks.data_wrappers import income_statement
 
+
 class FinancialData:
     def __init__(self, stonk_ticker, developer_mode=False):
-        api_wrapper = iex_cloud_api.IexCloudApi(
-            stonk_ticker,
-            'nooo',
-            developer_mode=developer_mode,
-        )
+        use_av = False
+        api = None
+        if use_av:
+            api = alpha_vantage_api
+            api_wrapper = alpha_vantage_api.AlphaVantageApi(
+                stonk_ticker,
+                'jkjk',
+                developer_mode=developer_mode,
+            )
+        else:
+            api = iex_cloud_api
+            api_wrapper = iex_cloud_api.IexCloudApi(
+                stonk_ticker,
+                'poop',
+                developer_mode=developer_mode,
+            )
 
         self._income_statement = income_statement.IncomeStatement(
             api_wrapper.get_income_statements(),
-            iex_cloud_api.IncomeStatementDataKeys,
+            api.IncomeStatementDataKeys,
         )
         self._balance_sheet = balance_sheet.BalanceSheet(
             api_wrapper.get_balance_sheets(),
-            iex_cloud_api.BalanceSheetDataKeys,
+            api.BalanceSheetDataKeys,
         )
         self._cashflow = cashflow.Cashflow(
             api_wrapper.get_cashflows(),
-            iex_cloud_api.CashflowDataKeys,
+            api.CashflowDataKeys,
         )
-        self._company_overview = iex_company_overview.IexCompanyOverview(
-            api_wrapper.get_company_overview(),
-            self._income_statement,
-            self._balance_sheet,
-            self._cashflow
-        )
+
+        if use_av:
+            self._company_overview = company_overview.CompanyOverview(
+                api_wrapper.get_company_overview(),
+                alpha_vantage_api.CompanyOverviewDataKeys
+            )
+        else:
+            self._company_overview = iex_company_overview.IexCompanyOverview(
+                api_wrapper.get_company_overview(),
+                self._income_statement,
+                self._balance_sheet,
+                self._cashflow
+            )
 
     @property
     def income_statement(self):

@@ -57,7 +57,7 @@ class AlphaVantageApi(base_api.BaseStonkApiWrapper):
 
 
 class BalanceSheetDataKeys:
-    cash = 'cash'
+    cash = 'cashAndCashEquivalentsAtCarryingValue'
     currency = 'reportedCurrency'
     current_assets = 'totalCurrentAssets'
     current_liabilities = 'totalCurrentLiabilities'
@@ -67,7 +67,7 @@ class BalanceSheetDataKeys:
     intangible_assets = 'intangibleAssets'
     inventory = 'inventory'
     long_term_debt = 'longTermDebt'
-    tangible_book_value = 'netTangibleAssets'
+    tangible_book_value = 'DOES_NOT_EXIST'
     total_assets = 'totalAssets'
     total_liabilities = 'totalLiabilities'
 
