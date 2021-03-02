@@ -6,12 +6,15 @@ class IexCloudApi(base_api.BaseStonkApiWrapper):
         super().__init__(stonk_ticker, api_key, 'IEX', developer_mode)
 
     def _get_json(self, api_function):
-        url = 'https://sandbox.iexapis.com/stable/stock/{}/{}?last=12&token={}'.format(
+        url = 'https://cloud.iexapis.com/stable/stock/{}/{}?last=12&token={}'.format(
             self.stonk_ticker,
             api_function,
             self.api_key,
         )
         return self.get_json(url, api_function)
+
+    def should_cache_api_response(self, response):
+        return len(response.keys()) != 0
 
     # https://iexcloud.io/docs/api/#income-statement
     def get_income_statements(self):
@@ -38,7 +41,7 @@ class IexCloudApi(base_api.BaseStonkApiWrapper):
         return balance_sheets
 
     def get_company_overview(self):
-        url = 'https://sandbox.iexapis.com/stable/stock/{}/stats?token={}'.format(
+        url = 'https://cloud.iexapis.com/stable/stock/{}/stats?token={}'.format(
             self.stonk_ticker,
             self.api_key,
         )
