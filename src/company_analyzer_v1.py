@@ -8,17 +8,7 @@ from stonks import base_api, financial_data
 
 
 def run(stock_ticker, developer_mode=False):
-    try:
-        data = financial_data.FinancialData(stock_ticker, developer_mode)
-    except base_api.StonkApiException as exc:
-        print(str(exc))
-        return {
-            'statusCode': 200,
-            'headers': {},
-            'body': json.dumps({
-                'error': str(exc),
-            }),
-        }
+    data = financial_data.FinancialData(stock_ticker, developer_mode)
     income_statement = data.income_statement
     company_overview = data.company_overview
     balance_sheet = data.balance_sheet

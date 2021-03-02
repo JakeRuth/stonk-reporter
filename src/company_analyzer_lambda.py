@@ -1,4 +1,5 @@
 import base64
+import json
 
 from stonks import base_api
 
@@ -10,6 +11,15 @@ def lambda_handler(event, context):
     try:
         workbook = company_analyzer_v1.run(stonk_ticker)
     except base_api.StonkApiException as exc:
+        print(str(exc))
+        return {
+            'statusCode': 200,
+            'headers': {},
+            'body': json.dumps({
+                'error': str(exc),
+            }),
+        }
+    except Exception as exc:
         print(str(exc))
         return {
             'statusCode': 200,

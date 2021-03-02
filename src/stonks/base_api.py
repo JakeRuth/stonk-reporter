@@ -71,7 +71,11 @@ class BaseStonkApiWrapper:
         if cached_response:
             return cached_response
 
-        response = requests.get(url).json()
+        raw_response = requests.get(url)
+        if raw_response.status_code == 404:
+            print('404 status found')
+            raise StonkApiException('This stonk does not exist in the stonk data api we are using :(')
+        response = raw_response.json()
         if self.should_cache_api_response(response):
             if self.developer_mode:
                 DEV_save_api_response(self.stonk_ticker, api_function, self.api_name, response)
