@@ -438,3 +438,6 @@ def run_local():
     filename = '{}_overview_v1.xlsx'.format(stonk_ticker)
     workbook.save(filename)
     os.startfile(filename)
+
+if __name__ == '__main__':
+    run_local()
