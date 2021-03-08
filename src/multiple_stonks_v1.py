@@ -118,15 +118,9 @@ def run(stonk_tickers, developer_mode=False):
 
 def run_local():
     workbook = run([
-        'GOOG',
-        'AMZN',
+        'MSFT',
         'AAPL',
-        'FB',
-        'SNAP',
-        'APHA',
-        'TLRY',
-        'BABA',
-        'TCNFF',
+        'GOOGL'
     ], True)
 
     filename = '_multiple_stonks.xlsx'

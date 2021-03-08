@@ -3,7 +3,7 @@ import json
 
 from stonks import base_api
 
-from . import company_analyzer_v1
+import company_analyzer_v1
 
 def lambda_handler(event, context):
     stonk_ticker = event["queryStringParameters"]['ticker']
