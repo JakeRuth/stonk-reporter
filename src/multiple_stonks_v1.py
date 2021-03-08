@@ -126,3 +126,6 @@ def run_local():
     filename = '_multiple_stonks.xlsx'
     workbook.save(filename)
     os.startfile(filename)
+
+if __name__ == '__main__':
+    run_local()

@@ -40,12 +40,12 @@ class IexCloudApi(base_api.BaseStonkApiWrapper):
             raise base_api.StonkApiException('This stonk does not exist in the stonk data api we are using :(')
         return balance_sheets
 
+    # https://iexcloud.io/docs/api/#key-stats
     def get_company_overview(self):
-        url = 'https://cloud.iexapis.com/stable/stock/{}/stats?token={}'.format(
-            self.stonk_ticker,
-            self.api_key,
-        )
-        return self.get_json(url, 'stats')
+        res = self._get_json('stats')
+        if not res:
+            raise base_api.StonkApiException('This stonk does not exist in the stonk data api we are using :(')
+        return res
 
 
 class BalanceSheetDataKeys:
