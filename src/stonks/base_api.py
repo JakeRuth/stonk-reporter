@@ -73,8 +73,13 @@ class BaseStonkApiWrapper:
 
         raw_response = requests.get(url)
         if raw_response.status_code == 404:
-            print('404 status found')
+            print('404 status returned from api')
             raise StonkApiException('This stonk does not exist in the stonk data api we are using :(')
+        if raw_response.status_code == 401:
+            print('401 status returned from api, is your api key right?')
+            raise StonkApiException('You got a 401, is your api key right?')
+
+        print('Got raw response: {}'.format(raw_response))
         response = raw_response.json()
         if self.should_cache_api_response(response):
             if self.developer_mode:

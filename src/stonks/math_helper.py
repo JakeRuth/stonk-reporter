@@ -5,7 +5,7 @@ def format_number(input):
     return round(number, 2) / 1000
 
 def string_to_float(input):
-    if (input == 'None'):
+    if (input == 'None' or input is None):
         print('WARNING: Unexpected None value for column, defaulting to 0')
         return 0
     return float(input)

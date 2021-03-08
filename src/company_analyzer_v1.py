@@ -433,7 +433,7 @@ def _add_income_sheet(workbook, income_statement, company_overview, cashflow):
     )
 
 def run_local():
-    stonk_ticker = 'APHA'
+    stonk_ticker = 'TCNNF'
     workbook = run(stonk_ticker, True)
     filename = '{}_overview_v1.xlsx'.format(stonk_ticker)
     workbook.save(filename)
