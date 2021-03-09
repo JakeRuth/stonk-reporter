@@ -4,7 +4,8 @@ import multiple_stonks_v1
 
 def lambda_handler(event, context):
     stonk_tickers = event["queryStringParameters"]['ticker'].strip().split(',')
-    workbook = multiple_stonks_v1.run(stonk_tickers)
+    trimmed_stonk_tickers = [ticker.strip() for ticker in stonk_tickers]
+    workbook = multiple_stonks_v1.run(trimmed_stonk_tickers)
 
     workbook.save('/tmp/spreadsheet.xlsx')
 

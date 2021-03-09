@@ -6,7 +6,6 @@ def format_number(input):
 
 def string_to_float(input):
     if (input == 'None' or input is None):
-        print('WARNING: Unexpected None value for column, defaulting to 0')
         return 0
     return float(input)
 
@@ -26,8 +25,8 @@ def calc_percent_increase(current, previous):
     increase = (current - previous) / previous
     return round(increase * 100, 2)
 
-def get_ttm_or_error(reports):
+def get_ttm(reports):
     first_four = reports[:4]
     if 0 in first_four:
-        return 'error'
+        return 0
     return sum(first_four)

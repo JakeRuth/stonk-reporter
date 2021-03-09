@@ -30,21 +30,21 @@ class BestApi(base_api.BaseStonkApiWrapper):
         income_statements = res['Financials']['Income_Statement']['quarterly']
 
         # json here is k -> v pairs of report date -> data, turn this into an array
-        return list(income_statements.values())
+        return list(income_statements.values())[:20]
 
     def get_cashflows(self):
         res = self._get_json()
         cashflows = res['Financials']['Cash_Flow']['quarterly']
 
         # json here is k -> v pairs of report date -> data, turn this into an array
-        return list(cashflows.values())
+        return list(cashflows.values())[:20]
 
     def get_balance_sheets(self):
         res = self._get_json()
         balance_sheets = res['Financials']['Balance_Sheet']['quarterly']
 
         # json here is k -> v pairs of report date -> data, turn this into an array
-        return list(balance_sheets.values())
+        return list(balance_sheets.values())[:20]
 
     def get_company_overview(self):
         res = self._get_json()

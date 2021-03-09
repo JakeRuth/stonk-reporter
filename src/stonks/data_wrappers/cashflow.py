@@ -65,7 +65,7 @@ class Cashflow:
 
     @property
     def free_cash_flow_ttm(self):
-        return math_helper.get_ttm_or_error(self._free_cash_flow)
+        return math_helper.get_ttm(self._free_cash_flow)
 
     @property
     def change_in_cash(self):

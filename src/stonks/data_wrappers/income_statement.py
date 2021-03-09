@@ -98,7 +98,7 @@ class IncomeStatement:
 
     @property
     def revenue_ttm(self):
-        return math_helper.get_ttm_or_error(self._all_revenue)
+        return math_helper.get_ttm(self._all_revenue)
 
     @property
     def all_cost_of_revenue(self):
@@ -106,7 +106,7 @@ class IncomeStatement:
 
     @property
     def cost_of_revenue_ttm(self):
-        return math_helper.get_ttm_or_error(self._all_cost_of_revenue)
+        return math_helper.get_ttm(self._all_cost_of_revenue)
 
     @property
     def revenue_growth(self):
@@ -122,7 +122,7 @@ class IncomeStatement:
 
     @property
     def gross_ttm(self):
-        return math_helper.get_ttm_or_error(self._all_gross)
+        return math_helper.get_ttm(self._all_gross)
 
     @property
     def gross_growth(self):
@@ -146,7 +146,7 @@ class IncomeStatement:
 
     @property
     def operating_income_ttm(self):
-        return math_helper.get_ttm_or_error(self._all_operating_income)
+        return math_helper.get_ttm(self._all_operating_income)
 
     @property
     def operating_income_growth(self):
@@ -162,7 +162,7 @@ class IncomeStatement:
 
     @property
     def operating_expense_ttm(self):
-        return math_helper.get_ttm_or_error(self._all_operating_expense)
+        return math_helper.get_ttm(self._all_operating_expense)
 
     @property
     def all_operating_margin(self):
@@ -178,7 +178,7 @@ class IncomeStatement:
 
     @property
     def net_income_ttm(self):
-        return math_helper.get_ttm_or_error(self._all_net_income)
+        return math_helper.get_ttm(self._all_net_income)
 
     @property
     def net_income_growth(self):
