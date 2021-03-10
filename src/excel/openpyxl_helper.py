@@ -1,5 +1,6 @@
 from openpyxl import chart, utils
 from openpyxl.chart import layout
+from openpyxl.styles import numbers
 from openpyxl.worksheet import table
 
 
@@ -11,6 +12,12 @@ TABLE_STYLES = {
     'teal': 'TableStyleMedium13',
     'green': 'TableStyleMedium11',
 }
+
+def get_column_pair(row, column):
+    return '{}{}'.format(
+        utils.get_column_letter(column),
+        row,
+    )
 
 def add_cell(
     worksheet,
@@ -29,13 +36,18 @@ def add_table(
     column_offset=1,
     showRowStripes=True,
 ):
+    # Update all cells that contain numbers to be comma separated
+    for i in range(row_offset + 1, num_rows + row_offset):
+        for j in range(column_offset + 1, num_columns + column_offset):
+            cell = worksheet[get_column_pair(i, j)]
+            if isinstance(cell.value, float):
+                cell.number_format = numbers.FORMAT_NUMBER_COMMA_SEPARATED1
+
     worksheet.add_table(table.Table(
         displayName=name,
-        ref='{}{}:{}{}'.format(
-            utils.get_column_letter(column_offset),
-            row_offset,
-            utils.get_column_letter(num_columns + column_offset - 1),
-            num_rows + row_offset - 1,
+        ref='{}:{}'.format(
+            get_column_pair(row_offset, column_offset),
+            get_column_pair(num_rows + row_offset - 1, num_columns + column_offset - 1),
         ),
         tableStyleInfo=table.TableStyleInfo(
             name=TABLE_STYLES[style],

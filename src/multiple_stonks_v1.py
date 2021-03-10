@@ -118,7 +118,10 @@ def run(stonk_tickers, developer_mode=False):
 
 def run_local():
     workbook = run([
-        'GGTTF'
+        'GGTTF',
+        'APHA',
+        'AAPL',
+        'GOOGL'
     ], True)
 
     filename = '_multiple_stonks.xlsx'
