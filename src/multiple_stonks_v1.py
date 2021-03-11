@@ -121,7 +121,8 @@ def run(stonk_tickers, developer_mode=False):
 def run_local():
     workbook = run([
         'GNOG',
-        'MMJ'
+        'MMJ',
+        'APHA'
     ], True)
 
     filename = '_multiple_stonks.xlsx'

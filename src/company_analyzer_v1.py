@@ -21,6 +21,13 @@ def run(stock_ticker, developer_mode=False):
 
     return workbook
 
+def run_local():
+    stonk_ticker = 'APHA'
+    workbook = run(stonk_ticker, True)
+    filename = '{}_overview_v1.xlsx'.format(stonk_ticker)
+    workbook.save(filename)
+    os.startfile(filename)
+
 def _add_cashflow_sheet(workbook, cashflow):
     worksheet = openpyxl_helper.add_sheet(
         workbook=workbook,
@@ -431,13 +438,6 @@ def _add_income_sheet(workbook, income_statement, company_overview, cashflow):
         style='black',
         showRowStripes=False,
     )
-
-def run_local():
-    stonk_ticker = 'TCNNF'
-    workbook = run(stonk_ticker, True)
-    filename = '{}_overview_v1.xlsx'.format(stonk_ticker)
-    workbook.save(filename)
-    os.startfile(filename)
 
 if __name__ == '__main__':
     run_local()

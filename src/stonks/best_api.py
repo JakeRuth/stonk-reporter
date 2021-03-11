@@ -41,7 +41,7 @@ class BestApi(base_api.BaseStonkApiWrapper):
         if not len(cashflows):
             raise base_api.StonkApiException('This stonk does not exist in the stonk data api we are using :(')
         # json here is k -> v pairs of report date -> data, turn this into an array
-        return list(cashflows.values())[:20]
+        return cashflows[:20]
 
     def get_balance_sheets(self):
         res = self._get_json()
@@ -50,7 +50,7 @@ class BestApi(base_api.BaseStonkApiWrapper):
         if not len(balance_sheets):
             raise base_api.StonkApiException('This stonk does not exist in the stonk data api we are using :(')
         # json here is k -> v pairs of report date -> data, turn this into an array
-        return list(balance_sheets.values())[:20]
+        return balance_sheets[:20]
 
     def get_company_overview(self):
         res = self._get_json()
