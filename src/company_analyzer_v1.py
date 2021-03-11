@@ -1,7 +1,8 @@
 import json
-import os
 
 import openpyxl as pyxl
+
+import utils
 
 from excel import openpyxl_helper
 from stonks import base_api, financial_data
@@ -437,7 +438,7 @@ def run_local():
     workbook = run(stonk_ticker, True)
     filename = '{}_overview_v1.xlsx'.format(stonk_ticker)
     workbook.save(filename)
-    os.startfile(filename)
+    utils.open_file(filename)
 
 if __name__ == '__main__':
     run_local()
