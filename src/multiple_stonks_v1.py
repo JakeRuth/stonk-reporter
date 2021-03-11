@@ -101,7 +101,7 @@ def run(stonk_tickers, developer_mode=False):
     )
 
     heading_row = [
-        "#'s in thousands ({})'".format(income_statement.currency)
+        "#'s in thousands ({})'".format(income_statement.currency if income_statement.currency else 'n/a')
     ] + stonk_tickers
     worksheet.append(heading_row)  # heading row
     for stonk_row_key in stonk_rows.keys():
