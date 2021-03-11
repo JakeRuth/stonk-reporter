@@ -1,0 +1,59 @@
+html, body {
+  background-color: black;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+
+#reactjs-root {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+}
+
+.money {
+  width: 160px;
+  margin: 20px auto;
+  -webkit-animation:spin 6s linear infinite;
+  -moz-animation:spin 6s linear infinite;
+  animation:spin 6s linear infinite;
+}
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+
+.text {
+  color: white;
+  max-width: 400px;
+  font-size: 25px;
+}
+
+.inputLabel {
+  font-size: 18px;
+  margin-right: 5px;
+}
+
+.inputContainer {
+  display: flex;
+  align-items: center;
+}
+
+.tickerInput {
+  width: 90px;
+  margin: 5px 0;
+}
+
+.createSheetButton {
+  width: 250px;
+  height: 42px;
+  font-size: 16px;
+  font-family: monospace;
+  margin-bottom: 10px;
+}
