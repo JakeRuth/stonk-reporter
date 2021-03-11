@@ -6,6 +6,7 @@ import openpyxl as pyxl
 from excel import openpyxl_helper
 from stonks import base_api, financial_data
 
+
 def run(stonk_tickers, developer_mode=False):
     stonk_rows = {
         'Revenue (TTM)': ['Revenue (TTM)'],

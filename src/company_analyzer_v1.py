@@ -6,6 +6,7 @@ import openpyxl as pyxl
 from excel import openpyxl_helper
 from stonks import base_api, financial_data
 
+
 def run(stock_ticker, developer_mode=False):
     data = financial_data.FinancialData(stock_ticker, developer_mode)
     income_statement = data.income_statement
