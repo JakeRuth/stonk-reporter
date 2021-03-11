@@ -6,7 +6,6 @@ import openpyxl as pyxl
 from excel import openpyxl_helper
 from stonks import base_api, financial_data
 
-
 def run(stonk_tickers, developer_mode=False):
     stonk_rows = {
         'Revenue (TTM)': ['Revenue (TTM)'],
@@ -41,11 +40,18 @@ def run(stonk_tickers, developer_mode=False):
         'P/B': ['P/B'],
         'P/S (TTM)': ['P/S'],
     }
-    income_statement = None  # Used outside for loop to get currency
+    income_statement = None
+    company_overview = None
+    balance_sheet = None
+    cashflow = None
     for ticker in stonk_tickers:
         print(ticker)
         try:
             stonk_data = financial_data.FinancialData(ticker, developer_mode)
+            income_statement = stonk_data.income_statement
+            company_overview = stonk_data.company_overview
+            balance_sheet = stonk_data.balance_sheet
+            cashflow = stonk_data.cashflow
         except base_api.StonkApiException as exc:
             print(str(exc))
             for idx, stonk_row_key in enumerate(stonk_rows.keys()):
@@ -54,11 +60,6 @@ def run(stonk_tickers, developer_mode=False):
                 else:
                     stonk_rows[stonk_row_key].append('>.>')
             continue
-
-        income_statement = stonk_data.income_statement
-        company_overview = stonk_data.company_overview
-        balance_sheet = stonk_data.balance_sheet
-        cashflow = stonk_data.cashflow
 
         stonk_rows['Revenue (TTM)'].append(income_statement.revenue_ttm)
         stonk_rows['Cost of Revenue'].append(income_statement.cost_of_revenue_ttm)
@@ -101,7 +102,7 @@ def run(stonk_tickers, developer_mode=False):
     )
 
     heading_row = [
-        "#'s in thousands ({})'".format(income_statement.currency if income_statement.currency else 'n/a')
+        "#'s in thousands ({})'".format(income_statement.currency if income_statement else 'n/a')
     ] + stonk_tickers
     worksheet.append(heading_row)  # heading row
     for stonk_row_key in stonk_rows.keys():
@@ -118,10 +119,8 @@ def run(stonk_tickers, developer_mode=False):
 
 def run_local():
     workbook = run([
-        'GGTTF',
-        'APHA',
-        'AAPL',
-        'GOOGL'
+        'GNOG',
+        'MMJ'
     ], True)
 
     filename = '_multiple_stonks.xlsx'

@@ -26,7 +26,4 @@ def calc_percent_increase(current, previous):
     return round(increase * 100, 2)
 
 def get_ttm(reports):
-    first_four = reports[:4]
-    if 0 in first_four:
-        return 0
-    return sum(first_four)
+    return sum(reports[:4])

@@ -27,22 +27,28 @@ class BestApi(base_api.BaseStonkApiWrapper):
 
     def get_income_statements(self):
         res = self._get_json()
-        income_statements = res['Financials']['Income_Statement']['quarterly']
+        income_statements = list(res['Financials']['Income_Statement']['quarterly'].values())
 
+        if not len(income_statements):
+            raise base_api.StonkApiException('This stonk does not exist in the stonk data api we are using :(')
         # json here is k -> v pairs of report date -> data, turn this into an array
-        return list(income_statements.values())[:20]
+        return income_statements[:20]
 
     def get_cashflows(self):
         res = self._get_json()
-        cashflows = res['Financials']['Cash_Flow']['quarterly']
+        cashflows = list(res['Financials']['Cash_Flow']['quarterly'].values())
 
+        if not len(cashflows):
+            raise base_api.StonkApiException('This stonk does not exist in the stonk data api we are using :(')
         # json here is k -> v pairs of report date -> data, turn this into an array
         return list(cashflows.values())[:20]
 
     def get_balance_sheets(self):
         res = self._get_json()
-        balance_sheets = res['Financials']['Balance_Sheet']['quarterly']
+        balance_sheets = list(res['Financials']['Balance_Sheet']['quarterly'].values())
 
+        if not len(balance_sheets):
+            raise base_api.StonkApiException('This stonk does not exist in the stonk data api we are using :(')
         # json here is k -> v pairs of report date -> data, turn this into an array
         return list(balance_sheets.values())[:20]
 
