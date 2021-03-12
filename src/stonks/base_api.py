@@ -78,6 +78,9 @@ class BaseStonkApiWrapper:
         if raw_response.status_code == 401:
             print('401 status returned from api, is your api key right?')
             raise StonkApiException('You got a 401, is your api key right?')
+        if raw_response.status_code == 502:
+            print('502 status returned from api, what the fuck api why you do that')
+            raise StonkApiException('The stonk api threw an exception that was unexpected, try again and it may work...')
 
         print('Got raw response: {}'.format(raw_response))
         response = raw_response.json()
