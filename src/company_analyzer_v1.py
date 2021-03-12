@@ -27,7 +27,7 @@ def run_local():
     workbook = run(stonk_ticker, True)
     filename = '{}_overview_v1.xlsx'.format(stonk_ticker)
     workbook.save(filename)
-    os.startfile(filename)
+    file_handler.open_file(filename)
 
 def _add_cashflow_sheet(workbook, cashflow):
     worksheet = openpyxl_helper.add_sheet(
