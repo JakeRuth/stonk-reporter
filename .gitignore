@@ -4,7 +4,6 @@
 **/build
 **/static_json_data
 **/aws*/**
-*.html
 *.xlsx
 *.json
 *.spec
